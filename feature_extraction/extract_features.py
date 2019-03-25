@@ -32,8 +32,6 @@ def add_common_words_features(model, entry):
 
 
 def add_formality_features(model, entry):
-    # TODO: calculate formal and informal words in each parts
-    # TODO: calculate ratios
     model.extend(calculate_all_formality_features(entry))
 
 

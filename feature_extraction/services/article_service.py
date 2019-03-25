@@ -1,2 +1,2 @@
 def calculate_article_features(entry):
-    return 1
+    return len(entry["targetKeywords"]), len(entry["targetParagraphs"]), len(entry["targetCaptions"])
