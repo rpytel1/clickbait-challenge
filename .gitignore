@@ -90,3 +90,5 @@ modules.xml
 # End of https://www.gitignore.io/api/pycharm+all
 data/
 /1710.06699.pdf
+/feature_extraction/test.json
+feature_extraction/services/__pycache__/
