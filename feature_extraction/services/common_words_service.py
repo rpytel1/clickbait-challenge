@@ -9,7 +9,7 @@ def calculate_common_words_features(entry):
     # no of words which overlap between set of keywords and words of certain part
     keywords = get_unique_set_from_text(entry["targetKeywords"])
 
-    post_title = get_unique_set_from_text(entry["targetKeywords"])
+    post_title = get_unique_set_from_text(entry["postText"][0])
     post_image = get_unique_set_from_text(get_text_from_image(entry))
     article_title = get_unique_set_from_text(entry["targetTitle"])
     article_desc = get_unique_set_from_text(entry["targetDescription"])

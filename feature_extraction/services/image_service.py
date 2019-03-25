@@ -5,7 +5,7 @@ except ImportError:
 
 import pytesseract
 
-BASIC_PATH = "../../data/media/"
+BASIC_PATH = "../data/clickbait-training/"
 
 
 def calculate_image_features(entry):
@@ -14,14 +14,14 @@ def calculate_image_features(entry):
     if len(entry["postMedia"]) > 0:
         has_image = 1
         text = get_text_from_image(entry)
-        if text is not None:
+        if text is not "":
             text_image = 1
 
     return has_image, text_image
 
 
 def get_text_from_image(entry):
-    text = None
+    text = ""
     for img in entry["postMedia"]:
         text = pytesseract.image_to_string(Image.open(BASIC_PATH + img))
     return text

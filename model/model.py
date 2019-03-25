@@ -1,8 +1,7 @@
 class Model:
     id = 0
     features = []
-    has_media = False
-    target_keywords = []
 
-    def __init__(self, index=0):
+    def __init__(self, index=0, features=[]):
         self.id = index
+        self.features = []

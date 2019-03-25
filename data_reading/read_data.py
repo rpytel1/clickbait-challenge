@@ -1,7 +1,7 @@
 import json
 import sys
 
-from feature_extraction.services.word_service import WordService
+from feature_extraction.extract_features import extract_features, save_models
 
 
 def read_data(filename):
@@ -10,8 +10,5 @@ def read_data(filename):
         for line in f:
             data.append(json.loads(line))
     return data
-#data = read_data(sys.argv[0])
-
-print("aaaa")
-text = "All work and no play makes jack dull boy, ? ! All work and no play makes jack a dull boy."
-print(WordService.calculate_basic_linguistic_features(text))
+data = read_data(sys.argv[1])
+extract_features(data)
