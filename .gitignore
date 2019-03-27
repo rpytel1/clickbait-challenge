@@ -94,4 +94,3 @@ data/
 feature_extraction/services/__pycache__/
 model/__pycache__/
 feature_extraction/__pycache__/
-data_reading/data.txt
