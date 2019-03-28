@@ -1,6 +1,5 @@
 import re
 from collections import Counter
-from statistics import mode
 
 import numpy as np
 from stanfordcorenlp import StanfordCoreNLP
@@ -24,13 +23,23 @@ def modify_floating_point_sign(str):
 
 def calculate_sentiment_features(str_list):
     sentiment_list = [2]
+    num_extremes_positive = 0
+    num_extremes_negative = 0
     for str in str_list:
         annotation = annotate(str)
         for s in annotation["sentences"]:
             sentiment_list.append(int(s["sentimentValue"]))
-
+            lst = extract_sentiments_per_words(s)
+            num_extremes_negative += lst.count('0')
+            num_extremes_positive += lst.count('4')
     matrix = np.array(sentiment_list)
-    return get_mode(sentiment_list), matrix.mean()
+    return get_mode(sentiment_list), matrix.mean(), num_extremes_positive, num_extremes_negative,
+
+
+def extract_sentiments_per_words(s):
+    lst = re.findall("(sentiment=\d)+", s['sentimentTree'])
+    improved_lst = [x[10:] for x in lst]
+    return improved_lst
 
 
 def get_mode(lst):
@@ -51,5 +60,15 @@ def calculate_all_sentiment_features(entry):
 
 
 def get_feat_names():
-    return ["sentiment_post_text", "sentiment_article_title", "sentiment_aritcle_description",
-            "sentiment_article_keywords", "sentiment_article_captions", "sentiment_article_paragraphs"]
+    return ["avg_sentiment_post_text", "mode_sentiment_post_text",
+            "num_of_positives_post_text", "num_of_negatives_post_text",
+            "avg_sentiment_article_title", "mode_sentiment_article_title",
+            "num_of_positives_article_title", "num_of_negatives_article_title",
+            "avg_sentiment_article_description", "mode_sentiment_article_description",
+            "num_of_positives_article_description", "num_of_negatives_article_description",
+            "avg_sentiment_article_keywords", "mode_sentiment_article_keywords",
+            "num_of_positives_article_keywords", "num_of_negatives_article_keywords",
+            "avg_sentiment_article_captions", "mode_sentiment_article_captions",
+            "num_of_positives_article_captions", "num_of_negatives_article_captions",
+            "avg_sentiment_article_paragraphs", "mode_sentiment_article_paragraphs",
+            "num_of_positives_article_paragraphs", "num_of_negatives_article_paragraphs"]

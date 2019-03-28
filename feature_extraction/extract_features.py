@@ -3,7 +3,7 @@ import json
 import jsonpickle as jsonpickle
 
 from feature_extraction.services import image_service, common_words_service, time_service, behaviour_analysis_service, \
-    cosine_similiarity_service, sentiment_analysis_service, article_service
+    cosine_similiarity_service, sentiment_analysis_service, article_service, clickbait_words_service
 from feature_extraction.services.formality_service import calculate_all_formality_features
 from feature_extraction.services.word_service import WordService
 from model.model import Model
@@ -27,6 +27,7 @@ def extract_features(data):
             add_article_properties_features(model, entry)
             add_cosine_similarities(model, entry)
             add_sentiment_features(model, entry)
+            add_clickbait_phrases_check(model, entry)
         else:
             feat_names.extend(add_image_related_features(model, entry))
             feat_names.extend(add_linguistic_analysis_features(model, entry))
@@ -34,9 +35,9 @@ def extract_features(data):
             feat_names.append(add_time_features(model, entry))
             feat_names.extend(add_behaviour_analysis_features(model, entry))
             feat_names.extend(add_article_properties_features(model, entry))
-            feat_names.extend(add_cosine_similarities(model,entry))
-            feat_names.extend(add_sentiment_features(model,entry))
-
+            feat_names.extend(add_cosine_similarities(model, entry))
+            feat_names.extend(add_sentiment_features(model, entry))
+            feat_names.append(add_clickbait_phrases_check(model, entry))
             print(len(feat_names))
             feat_dict = {}
             for j in range(len(feat_names)):
@@ -58,8 +59,8 @@ def add_linguistic_analysis_features(model, entry):
     # num, diffs and ratios for chars and words
     word_service = WordService()
     feat_list = list(word_service.calculate_all_linguistic_features(entry))
-    model.features.extend(feat_list[:int(len(feat_list)/2)])
-    return feat_list[int(len(feat_list)/2):]
+    model.features.extend(feat_list[:int(len(feat_list) / 2)])
+    return feat_list[int(len(feat_list) / 2):]
 
 
 def add_common_words_features(model, entry):
@@ -89,14 +90,20 @@ def add_article_properties_features(model, entry):
     return article_service.get_feat_names()
 
 
-def add_cosine_similarities(model,entry):
+def add_cosine_similarities(model, entry):
     model.features.extend(cosine_similiarity_service.calculate_cosine_similiarity(entry))
     return cosine_similiarity_service.get_feat_names()
 
 
-def add_sentiment_features(model,entry):
+def add_sentiment_features(model, entry):
     model.features.extend(sentiment_analysis_service.calculate_all_sentiment_features(entry))
     return sentiment_analysis_service.get_feat_names()
+
+
+def add_clickbait_phrases_check(model, entry):
+    model.features.append(clickbait_words_service.get_clickbait_words_features(entry))
+    print(model.features)
+    return clickbait_words_service.get_feat_names()
 
 
 def save_models(model_lists):
