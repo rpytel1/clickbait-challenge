@@ -98,3 +98,4 @@ feature_extraction/services/utils/__pycache__/
 ml/__pycache__/
 ml/svm/__pycache__/
 stanford-corenlp-full-2018-10-05/
+data_reading/__pycache__/
