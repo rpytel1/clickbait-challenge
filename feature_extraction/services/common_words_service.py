@@ -18,7 +18,9 @@ def calculate_common_words_features(entry):
 
     return len(set.intersection(keywords, post_title)), len(set.intersection(keywords, post_image)), \
            len(set.intersection(keywords, article_title)), len(set.intersection(keywords, article_desc)), \
-           len(set.intersection(keywords, article_captions)), len(set.intersection(keywords, article_paragraphs))
+           len(set.intersection(keywords, article_captions)), len(set.intersection(keywords, article_paragraphs)), \
+           'keywords_in_post_title', 'keywords_in_post_image', 'keywords_in_article_title', 'keywords_in_article_desc', \
+           'keywords_in_article_captions', 'keywords_in_article_paragraphs'
 
 
 def get_unique_set_from_text(text):

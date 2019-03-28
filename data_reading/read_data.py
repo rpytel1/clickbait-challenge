@@ -10,5 +10,9 @@ def read_data(filename):
         for line in f:
             data.append(json.loads(line))
     return data
-data = read_data(sys.argv[1])
+
+
+print('Dataset Reading...')
+data = read_data('../data/clickbait-training/instances.jsonl')
+print('Extracting Features...')
 extract_features(data)
