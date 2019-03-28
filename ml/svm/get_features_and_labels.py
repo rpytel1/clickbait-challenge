@@ -6,7 +6,7 @@ import pandas as pd
 
 def get_features_and_labels():
 
-    filename = "../../data_reading/data.txt"
+    filename = "../data_reading/data.txt"
     with open(filename) as json_file:
         data_encoded = json.load(json_file)
         data = jsonpickle.decode(data_encoded)
@@ -17,7 +17,7 @@ def get_features_and_labels():
         for ind, feature in enumerate(post.features):
             post_dict[post.id][ind] = feature
 
-    truth_file = '../../data/clickbait-training/truth.jsonl'
+    truth_file = '../data/clickbait-training/truth.jsonl'
     with open(truth_file, encoding="utf-8") as f:
         for ind, line in enumerate(f):
             post = json.loads(line)
