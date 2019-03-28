@@ -2,11 +2,9 @@ import pprint
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
 from sklearn import svm
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import StratifiedShuffleSplit, KFold
+from sklearn.model_selection import StratifiedShuffleSplit
 
-from ml.svm.get_features_and_labels import get_features_and_labels
+from feature_extraction.services.utils.classification_features_and_labels import get_features_and_labels
 
 X, y = get_features_and_labels()
 sss = StratifiedShuffleSplit(n_splits=10, random_state=42)
@@ -30,15 +28,15 @@ for train_index, test_index in sss.split(X, y):
     clf.fit(X_train, y_train)
     y_pred = clf.predict(X_test)
 
-    accuracy += accuracy_score(y_test, y_pred) * 100
+    accuracy += accuracy_score(y_test, y_pred)
 
     tn, fp, fn, tp = conf_matrix = confusion_matrix(y_test, y_pred).ravel()
     print("(TN, FP, FN, TP) = {}".format((tn, fp, fn, tp)))
 
-    precision += precision_score(y_test, y_pred) * 100
-    recall += recall_score(y_test, y_pred) * 100
-    f_scores.append(f1_score(y_test, y_pred) * 100)
-    f1 += f1_score(y_test, y_pred) * 100
+    precision += precision_score(y_test, y_pred)
+    recall += recall_score(y_test, y_pred)
+    f_scores.append(f1_score(y_test, y_pred))
+    f1 += f1_score(y_test, y_pred)
 
 print("Accuracy is ", accuracy / 10)
 
