@@ -6,11 +6,11 @@ import numpy as np
 from stanfordcorenlp import StanfordCoreNLP
 import json
 
-nlp = StanfordCoreNLP('http://localhost', port=9000,timeout=30000)  # , quiet=False, logging_level=logging.DEBUG)
+nlp = StanfordCoreNLP('http://localhost', port=9000, timeout=30000)  # , quiet=False, logging_level=logging.DEBUG)
 props = {
-            'annotators': 'sentiment',
-            'pipelineLanguage': 'en',
-            'outputFormat': 'json'
+    'annotators': 'sentiment',
+    'pipelineLanguage': 'en',
+    'outputFormat': 'json'
 }
 
 
@@ -45,5 +45,11 @@ def calculate_all_sentiment_features(entry):
     article_keywords_sentiment = calculate_sentiment_features([entry["targetKeywords"]])
     article_captions_sentiment = calculate_sentiment_features(entry["targetCaptions"])
     article_paragraphs_sentiment = calculate_sentiment_features(entry["targetParagraphs"])
-    lst = [post_title_sentiment, article_title_sentiment, article_desc_sentiment, article_keywords_sentiment, article_captions_sentiment, article_paragraphs_sentiment]
+    lst = [post_title_sentiment, article_title_sentiment, article_desc_sentiment, article_keywords_sentiment,
+           article_captions_sentiment, article_paragraphs_sentiment]
     return list(sum(lst, ()))
+
+
+def get_feat_names():
+    return ["sentiment_post_text", "sentiment_article_title", "sentiment_aritcle_description",
+            "sentiment_article_keywords", "sentiment_article_captions", "sentiment_article_paragraphs"]

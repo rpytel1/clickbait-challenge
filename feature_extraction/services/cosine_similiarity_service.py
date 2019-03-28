@@ -22,6 +22,7 @@ def text_to_vector(text):
     words = WORD.findall(text)
     return Counter(words)
 
+
 def calculate_cosine_similiarity(entry):
     vector_post_title = text_to_vector(entry["postText"][0])
     vector_article_title = text_to_vector(entry["targetTitle"])
@@ -30,11 +31,14 @@ def calculate_cosine_similiarity(entry):
     vector_article_captions = text_to_vector(" ".join(entry["targetCaptions"]))
     vector_article_paragraph = text_to_vector(" ".join(entry["targetParagraphs"]))
 
-    matrix_list = [vector_post_title,vector_article_title, vector_article_desc, vector_article_keywords, vector_article_captions, vector_article_paragraph ]
+    matrix_list = [vector_article_title, vector_article_desc, vector_article_keywords, vector_article_captions,
+                   vector_article_paragraph]
     cosine_list = []
-    for i in range(len(matrix_list)):
-
-        for j in range(i + 1, len(matrix_list)):
-            cosine_list.append(get_cosine(matrix_list[i], matrix_list[j]))
+    for j in range(len(matrix_list)):
+        cosine_list.append(get_cosine(vector_post_title, matrix_list[j]))
     return cosine_list
 
+
+def get_feat_names():
+    return ["cosine_post_article_title", "cosine_post_article_desc", "cosine_post_article_keywords",
+            "cosine_post_captions", "cosine_post_paragraphs"]
