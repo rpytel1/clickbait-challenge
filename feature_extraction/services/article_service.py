@@ -1,6 +1,6 @@
 def calculate_article_features(entry):
-    return len(entry["targetKeywords"]), len(entry["targetParagraphs"]), len(entry["targetCaptions"])
-
+    return 0 if not len(entry["targetKeywords"]) else len(entry["targetKeywords"].split(',')), \
+           len(entry["targetParagraphs"]), len(entry["targetCaptions"])
 
 
 def get_feat_names():
