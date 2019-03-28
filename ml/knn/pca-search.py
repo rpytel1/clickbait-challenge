@@ -3,7 +3,7 @@ from sklearn.decomposition import PCA
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
 from sklearn.model_selection import StratifiedShuffleSplit
 
-from ml.svm.get_features_and_labels import get_features_and_labels
+from feature_extraction.services.utils.classification_features_and_labels import get_features_and_labels
 
 X, y = get_features_and_labels()
 sss = StratifiedShuffleSplit(n_splits=10, random_state=42)

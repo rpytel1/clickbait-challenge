@@ -20,7 +20,6 @@ class WordService:
         all_ling = self.calculate_linguistic_features()
         ratios = self.calculate_ratios()
         diffs = self.calculate_diff_features()
-
         return flatten_list_of_lists([all_ling, ratios, diffs]) + self.feat_list
 
     def calculate_linguistic_features(self):
@@ -30,9 +29,9 @@ class WordService:
         # Triangular difference for all parts
         diffs = []
         for i in range(len(self.matrix_list)):
-            for j in range(i+1, len(self.matrix_list)):
-                self.feat_list += ['diff_'+self.feat_list[2*i]+'_'+self.feat_list[2*j]]
-                self.feat_list += ['diff_' + self.feat_list[2*i+1] + '_' + self.feat_list[2*j+1]]
+            for j in range(i + 1, len(self.matrix_list)):
+                self.feat_list += ['diff_' + self.feat_list[2 * i] + '_' + self.feat_list[2 * j]]
+                self.feat_list += ['diff_' + self.feat_list[2 * i + 1] + '_' + self.feat_list[2 * j + 1]]
                 diffs.append(list(map(abs, list(self.matrix_list[i] - self.matrix_list[j]))))
         return flatten_list_of_lists(diffs)
 
@@ -41,11 +40,13 @@ class WordService:
 
         diffs = []
         for i in range(len(self.matrix_list)):
-            for j in range(i+1, len(self.matrix_list)):
-                self.feat_list += ['ratio_' + self.feat_list[2*i] + '_' + self.feat_list[2*j]]
-                self.feat_list += ['ratio_' + self.feat_list[2*i+1] + '_' + self.feat_list[2*j+1]]
-                ratio = np.divide(self.matrix_list[i], self.matrix_list[j], out=np.ones_like(self.matrix_list[j])*(-1),
-                          where=np.multiply(self.matrix_list[i], self.matrix_list[j]) != 0)
+            for j in range(i + 1, len(self.matrix_list)):
+                self.feat_list += ['ratio_' + self.feat_list[2 * i] + '_' + self.feat_list[2 * j]]
+                self.feat_list += ['ratio_' + self.feat_list[2 * i + 1] + '_' + self.feat_list[2 * j + 1]]
+                ratio = np.divide(self.matrix_list[i], self.matrix_list[j],
+                                  out=np.ones_like(self.matrix_list[j]) * (-1),
+                                  where=np.multiply(self.matrix_list[i], self.matrix_list[j]) != 0)
+
                 diffs.append(ratio)
         return flatten_list_of_lists(diffs)
 
@@ -67,15 +68,18 @@ class WordService:
         self.feat_list += ['article_title_len_words', 'article_title_len_chars']
 
         # article description
-        article_desc_feats = np.array(self.calculate_basic_linguistic_features(entry["targetDescription"]), dtype=np.float)
+        article_desc_feats = np.array(self.calculate_basic_linguistic_features(entry["targetDescription"]),
+                                      dtype=np.float)
         self.feat_list += ['article_desc_len_words', 'article_desc_len_chars']
 
         # articles keyword
-        article_keyword_feats = np.array(self.calculate_basic_linguistic_features(entry["targetKeywords"]), dtype=np.float)
+        article_keyword_feats = np.array(self.calculate_basic_linguistic_features(entry["targetKeywords"]),
+                                         dtype=np.float)
         self.feat_list += ['article_keyword_len_words', 'article_keyword_len_chars']
 
         # articles captions
-        article_captions_feats = np.array(self.calculate_basic_linguistic_features(" ".join(entry["targetCaptions"])), dtype=np.float)
+        article_captions_feats = np.array(self.calculate_basic_linguistic_features(" ".join(entry["targetCaptions"])),
+                                          dtype=np.float)
         self.feat_list += ['article_caption_len_words', 'article_caption_len_chars']
 
         # articles paragraphs

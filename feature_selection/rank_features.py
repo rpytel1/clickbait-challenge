@@ -1,4 +1,4 @@
-from ml.svm import get_features_and_labels
+from feature_extraction.services.utils.classification_features_and_labels import get_features_and_labels
 from info_gain import info_gain
 import numpy as np
 import json
@@ -28,7 +28,7 @@ def get_fpr_mutual(X, y):
     return SelectFpr(score_func=mutual_info_regression).fit(X, y)
 
 
-X, y = get_features_and_labels.get_features_and_labels()
+X, y = get_features_and_labels()
 with open('../data_reading/features_labels.json') as json_file:
     feat_names = json.load(json_file)
 
