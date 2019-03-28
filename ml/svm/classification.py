@@ -2,6 +2,7 @@ import pprint
 import numpy as np
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix
 from sklearn import svm
+from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedShuffleSplit, KFold
 
@@ -33,10 +34,6 @@ for train_index, test_index in sss.split(X, y):
 
     tn, fp, fn, tp = conf_matrix = confusion_matrix(y_test, y_pred).ravel()
     print("(TN, FP, FN, TP) = {}".format((tn, fp, fn, tp)))
-
-    # RECALL = tp / (tp + fn)
-    # PRECISION = tp / (tp + fp)
-    # F1 = 2 * (PRECISION * RECALL) / (PRECISION + RECALL)
 
     precision += precision_score(y_test, y_pred) * 100
     recall += recall_score(y_test, y_pred) * 100

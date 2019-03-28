@@ -2,6 +2,7 @@ import nltk as nltk
 import numpy as np
 
 from feature_extraction.services.image_service import get_text_from_image
+from feature_extraction.services.utils.list_util import flatten_list_of_lists, unwrap_from_np_array
 
 
 class WordService:
@@ -20,10 +21,10 @@ class WordService:
         ratios = self.calculate_ratios()
         diffs = self.calculate_diff_features()
 
-        return self.flatten_list_of_lists([all_ling, ratios, diffs]) + self.feat_list
+        return flatten_list_of_lists([all_ling, ratios, diffs]) + self.feat_list
 
     def calculate_linguistic_features(self):
-        return self.unwrap_from_np_array(self.matrix_list)
+        return unwrap_from_np_array(self.matrix_list)
 
     def calculate_diff_features(self):
         # Triangular difference for all parts
@@ -33,7 +34,7 @@ class WordService:
                 self.feat_list += ['diff_'+self.feat_list[2*i]+'_'+self.feat_list[2*j]]
                 self.feat_list += ['diff_' + self.feat_list[2*i+1] + '_' + self.feat_list[2*j+1]]
                 diffs.append(list(map(abs, list(self.matrix_list[i] - self.matrix_list[j]))))
-        return self.flatten_list_of_lists(diffs)
+        return flatten_list_of_lists(diffs)
 
     def calculate_ratios(self):
         # Triangular ratios between all parts
@@ -46,7 +47,7 @@ class WordService:
                 ratio = np.divide(self.matrix_list[i], self.matrix_list[j], out=np.ones_like(self.matrix_list[j])*(-1),
                           where=np.multiply(self.matrix_list[i], self.matrix_list[j]) != 0)
                 diffs.append(ratio)
-        return self.flatten_list_of_lists(diffs)
+        return flatten_list_of_lists(diffs)
 
     def create_matrices(self, entry):
         # create list of matrixes containing number of chars and num of words per each part
@@ -85,15 +86,6 @@ class WordService:
         # triangular diff
         self.matrix_list = [post_title_feats, article_title_feats, article_desc_feats, article_keyword_feats,
                             article_captions_feats, article_paragraph_feats, post_image_feats]
-
-    @staticmethod
-    def unwrap_from_np_array(lis_of_np_array):
-        list_of_lists = [x.tolist() for x in lis_of_np_array]
-        return [item for sublist in list_of_lists for item in sublist]
-
-    @staticmethod
-    def flatten_list_of_lists(list_of_lists):
-        return [item for sublist in list_of_lists for item in sublist]
 
     @staticmethod
     def calculate_basic_linguistic_features(text):

@@ -27,7 +27,6 @@ def get_features_and_labels():
                 clickbait = 0
             post_dict[post["id"]]["label"] = clickbait
 
-    index = post_dict.keys()
     features = pd.DataFrame.from_dict(post_dict, orient='index', dtype=None)
 
     labels_df = features.loc[:, 'label']

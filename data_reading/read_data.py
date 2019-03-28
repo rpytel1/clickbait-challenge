@@ -1,7 +1,7 @@
 import json
 import sys
 
-from feature_extraction.extract_features import extract_features, save_models
+from feature_extraction.extract_features import extract_features
 
 
 def read_data(filename):

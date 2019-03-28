@@ -1,0 +1,557 @@
+{
+  "sentences": [
+    {
+      "index": 0,
+      "parse": "(ROOT\n  (S\n    (NP (PRP I))\n    (VP (VBP love)\n      (NP (PRP you)))\n    (. .)))",
+      "basicDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 2,
+          "dependentGloss": "love"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 1,
+          "dependentGloss": "I"
+        },
+        {
+          "dep": "dobj",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 3,
+          "dependentGloss": "you"
+        },
+        {
+          "dep": "punct",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "enhancedDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 2,
+          "dependentGloss": "love"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 1,
+          "dependentGloss": "I"
+        },
+        {
+          "dep": "dobj",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 3,
+          "dependentGloss": "you"
+        },
+        {
+          "dep": "punct",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "enhancedPlusPlusDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 2,
+          "dependentGloss": "love"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 1,
+          "dependentGloss": "I"
+        },
+        {
+          "dep": "dobj",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 3,
+          "dependentGloss": "you"
+        },
+        {
+          "dep": "punct",
+          "governor": 2,
+          "governorGloss": "love",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "sentimentValue": "3",
+      "sentiment": "Positive",
+      "sentimentDistribution": [
+        0,00293611322523,ń
+        0,00486683822261,
+        0,15664015542798,
+        0,63963963462933,
+        0,19591725849485
+      ],
+      "sentimentTree": "(ROOT|sentiment=3|prob=0,640 (NP|sentiment=2|prob=0,996 I)\n  (@S|sentiment=3|prob=0,756\n    (VP|sentiment=2|prob=0,430 (VBP|sentiment=4|prob=0,895 love) (NP|sentiment=2|prob=0,995 you))\n    (.|sentiment=2|prob=0,997 .)))",
+      "tokens": [
+        {
+          "index": 1,
+          "word": "I",
+          "originalText": "I",
+          "characterOffsetBegin": 0,
+          "characterOffsetEnd": 1,
+          "pos": "PRP",
+          "before": "",
+          "after": " "
+        },
+        {
+          "index": 2,
+          "word": "love",
+          "originalText": "love",
+          "characterOffsetBegin": 2,
+          "characterOffsetEnd": 6,
+          "pos": "VBP",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 3,
+          "word": "you",
+          "originalText": "you",
+          "characterOffsetBegin": 7,
+          "characterOffsetEnd": 10,
+          "pos": "PRP",
+          "before": " ",
+          "after": ""
+        },
+        {
+          "index": 4,
+          "word": ".",
+          "originalText": ".",
+          "characterOffsetBegin": 10,
+          "characterOffsetEnd": 11,
+          "pos": ".",
+          "before": "",
+          "after": " "
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "parse": "(ROOT\n  (S\n    (NP (PRP I))\n    (VP (VBP hate)\n      (NP (PRP him)))\n    (. .)))",
+      "basicDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 2,
+          "dependentGloss": "hate"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 1,
+          "dependentGloss": "I"
+        },
+        {
+          "dep": "dobj",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 3,
+          "dependentGloss": "him"
+        },
+        {
+          "dep": "punct",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "enhancedDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 2,
+          "dependentGloss": "hate"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 1,
+          "dependentGloss": "I"
+        },
+        {
+          "dep": "dobj",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 3,
+          "dependentGloss": "him"
+        },
+        {
+          "dep": "punct",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "enhancedPlusPlusDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 2,
+          "dependentGloss": "hate"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 1,
+          "dependentGloss": "I"
+        },
+        {
+          "dep": "dobj",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 3,
+          "dependentGloss": "him"
+        },
+        {
+          "dep": "punct",
+          "governor": 2,
+          "governorGloss": "hate",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "sentimentValue": "1",
+      "sentiment": "Negative",
+      "sentimentDistribution": [
+        0,14286859701409,
+        0,46409280050208,
+        0,2155722930724,
+        0,12509694682251,
+        0,05236936258892
+      ],
+      "sentimentTree": "(ROOT|sentiment=1|prob=0,464 (NP|sentiment=2|prob=0,996 I)\n  (@S|sentiment=1|prob=0,406\n    (VP|sentiment=2|prob=0,376 (VBP|sentiment=0|prob=0,478 hate) (NP|sentiment=2|prob=0,991 him))\n    (.|sentiment=2|prob=0,997 .)))",
+      "tokens": [
+        {
+          "index": 1,
+          "word": "I",
+          "originalText": "I",
+          "characterOffsetBegin": 12,
+          "characterOffsetEnd": 13,
+          "pos": "PRP",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 2,
+          "word": "hate",
+          "originalText": "hate",
+          "characterOffsetBegin": 14,
+          "characterOffsetEnd": 18,
+          "pos": "VBP",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 3,
+          "word": "him",
+          "originalText": "him",
+          "characterOffsetBegin": 19,
+          "characterOffsetEnd": 22,
+          "pos": "PRP",
+          "before": " ",
+          "after": ""
+        },
+        {
+          "index": 4,
+          "word": ".",
+          "originalText": ".",
+          "characterOffsetBegin": 22,
+          "characterOffsetEnd": 23,
+          "pos": ".",
+          "before": "",
+          "after": " "
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "parse": "(ROOT\n  (S\n    (NP (PRP You))\n    (VP (VBP are)\n      (ADJP (JJ nice)))\n    (. .)))",
+      "basicDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 3,
+          "dependentGloss": "nice"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 1,
+          "dependentGloss": "You"
+        },
+        {
+          "dep": "cop",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 2,
+          "dependentGloss": "are"
+        },
+        {
+          "dep": "punct",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "enhancedDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 3,
+          "dependentGloss": "nice"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 1,
+          "dependentGloss": "You"
+        },
+        {
+          "dep": "cop",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 2,
+          "dependentGloss": "are"
+        },
+        {
+          "dep": "punct",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "enhancedPlusPlusDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 3,
+          "dependentGloss": "nice"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 1,
+          "dependentGloss": "You"
+        },
+        {
+          "dep": "cop",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 2,
+          "dependentGloss": "are"
+        },
+        {
+          "dep": "punct",
+          "governor": 3,
+          "governorGloss": "nice",
+          "dependent": 4,
+          "dependentGloss": "."
+        }
+      ],
+      "sentimentValue": "3",
+      "sentiment": "Positive",
+      "sentimentDistribution": [
+        0,0075881473934,
+        0,02335733180331,
+        0,30398517770974,
+        0,57872768814286,
+        0,08634165495069
+      ],
+      "sentimentTree": "(ROOT|sentiment=3|prob=0,579 (NP|sentiment=2|prob=0,996 You)\n  (@S|sentiment=3|prob=0,756\n    (VP|sentiment=2|prob=0,592 (VBP|sentiment=2|prob=0,992 are) (ADJP|sentiment=3|prob=0,941 nice))\n    (.|sentiment=2|prob=0,997 .)))",
+      "tokens": [
+        {
+          "index": 1,
+          "word": "You",
+          "originalText": "You",
+          "characterOffsetBegin": 24,
+          "characterOffsetEnd": 27,
+          "pos": "PRP",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 2,
+          "word": "are",
+          "originalText": "are",
+          "characterOffsetBegin": 28,
+          "characterOffsetEnd": 31,
+          "pos": "VBP",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 3,
+          "word": "nice",
+          "originalText": "nice",
+          "characterOffsetBegin": 32,
+          "characterOffsetEnd": 36,
+          "pos": "JJ",
+          "before": " ",
+          "after": ""
+        },
+        {
+          "index": 4,
+          "word": ".",
+          "originalText": ".",
+          "characterOffsetBegin": 36,
+          "characterOffsetEnd": 37,
+          "pos": ".",
+          "before": "",
+          "after": " "
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "parse": "(ROOT\n  (S\n    (NP (PRP He))\n    (VP (VBZ is)\n      (ADJP (JJ dumb)))))",
+      "basicDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 3,
+          "dependentGloss": "dumb"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 3,
+          "governorGloss": "dumb",
+          "dependent": 1,
+          "dependentGloss": "He"
+        },
+        {
+          "dep": "cop",
+          "governor": 3,
+          "governorGloss": "dumb",
+          "dependent": 2,
+          "dependentGloss": "is"
+        }
+      ],
+      "enhancedDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 3,
+          "dependentGloss": "dumb"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 3,
+          "governorGloss": "dumb",
+          "dependent": 1,
+          "dependentGloss": "He"
+        },
+        {
+          "dep": "cop",
+          "governor": 3,
+          "governorGloss": "dumb",
+          "dependent": 2,
+          "dependentGloss": "is"
+        }
+      ],
+      "enhancedPlusPlusDependencies": [
+        {
+          "dep": "ROOT",
+          "governor": 0,
+          "governorGloss": "ROOT",
+          "dependent": 3,
+          "dependentGloss": "dumb"
+        },
+        {
+          "dep": "nsubj",
+          "governor": 3,
+          "governorGloss": "dumb",
+          "dependent": 1,
+          "dependentGloss": "He"
+        },
+        {
+          "dep": "cop",
+          "governor": 3,
+          "governorGloss": "dumb",
+          "dependent": 2,
+          "dependentGloss": "is"
+        }
+      ],
+      "sentimentValue": "1",
+      "sentiment": "Negative",
+      "sentimentDistribution": [
+        0,18682617240096,
+        0,72850082792419,
+        0,06848646493686,
+        0,00919342093783,
+        0,00699311380016
+      ],
+      "sentimentTree": "(ROOT|sentiment=1|prob=0,729 (NP|sentiment=2|prob=0,996 He)\n  (VP|sentiment=1|prob=0,711 (VBZ|sentiment=2|prob=0,989 is) (ADJP|sentiment=1|prob=0,876 dumb)))",
+      "tokens": [
+        {
+          "index": 1,
+          "word": "He",
+          "originalText": "He",
+          "characterOffsetBegin": 38,
+          "characterOffsetEnd": 40,
+          "pos": "PRP",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 2,
+          "word": "is",
+          "originalText": "is",
+          "characterOffsetBegin": 41,
+          "characterOffsetEnd": 43,
+          "pos": "VBZ",
+          "before": " ",
+          "after": " "
+        },
+        {
+          "index": 3,
+          "word": "dumb",
+          "originalText": "dumb",
+          "characterOffsetBegin": 44,
+          "characterOffsetEnd": 48,
+          "pos": "JJ",
+          "before": " ",
+          "after": ""
+        }
+      ]
+    }
+  ]
+}

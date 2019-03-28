@@ -5,8 +5,10 @@ import jsonpickle as jsonpickle
 from feature_extraction.services.article_service import calculate_article_features
 from feature_extraction.services.behaviour_analysis_service import calculate_all_behaviour_features
 from feature_extraction.services.common_words_service import calculate_common_words_features
+from feature_extraction.services.cosine_similiarity_service import calculate_cosine_similiarity
 from feature_extraction.services.formality_service import calculate_all_formality_features
 from feature_extraction.services.image_service import calculate_image_features
+from feature_extraction.services.sentiment_analysis_service import calculate_all_sentiment_features
 from feature_extraction.services.time_service import calculate_time_features
 from feature_extraction.services.word_service import WordService
 from model.model import Model
@@ -92,9 +94,16 @@ def add_article_properties_features(model, entry):
     return feat_list[int(len(feat_list)/2):]
 
 
-def save_models(model_lists):
-    # TODO: Needs to be saved properly
 
+def add_cosine_similarities(model,entry):
+    model.features.extend(calculate_cosine_similiarity(entry))
+
+
+def add_sentiment_features(model,entry):
+    model.features.extend(calculate_all_sentiment_features(entry))
+
+
+def save_models(model_lists):
     with open('data.txt', 'w') as f:
         encoded_dictionary = jsonpickle.encode(model_lists)
         json.dump(encoded_dictionary, f)
