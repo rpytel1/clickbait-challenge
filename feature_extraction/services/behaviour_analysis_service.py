@@ -2,6 +2,7 @@ from feature_extraction.services.image_service import get_text_from_image
 from functools import reduce
 import nltk
 from nltk.corpus import stopwords
+import re
 
 
 def calculate_all_behaviour_features(entry):
@@ -12,9 +13,14 @@ def calculate_all_behaviour_features(entry):
     behaviour_post_keywords = calculate_special_signs(entry["targetKeywords"])
     behaviour_post_captions = calculate_special_signs(" ".join(entry["targetCaptions"]))
     behaviour_post_paragraphs = calculate_special_signs(" ".join(entry["targetParagraphs"]))
+    number_start_post_title = check_num(entry["postText"][0])
+    number_start_article_title = check_num(entry["targetTitle"])
+    wh_start_post_title = check_5w1h(entry["postText"][0])
+    wh_start_article_title = check_5w1h(entry["targetTitle"])
 
-    return [behaviour_post_title, behaviour_post_image, behaviour_article_title, \
-            behaviour_post_desc, behaviour_post_keywords, behaviour_post_captions, behaviour_post_paragraphs]
+    return behaviour_post_title + behaviour_post_image + behaviour_article_title + \
+            behaviour_post_desc + behaviour_post_keywords + behaviour_post_captions + behaviour_post_paragraphs + \
+            [number_start_post_title, number_start_article_title, wh_start_post_title, wh_start_article_title]
 
 
 def get_feat_names():
@@ -39,15 +45,24 @@ def get_feat_names():
                                           'fr_stop_words_article_paragraphs']
     return behaviour_post_title_feats + behaviour_post_image_feats + behaviour_article_title_feats + \
            behaviour_article_desc_feats + behaviour_article_keywords_feats + behaviour_article_captions_feats + \
-           behaviour_article_paragraphs_feats
+           behaviour_article_paragraphs_feats + ['post_title_starts_num', 'article_title_starts_num',
+            'post_title_starts_5w1h', 'article_title_starts_5w1h']
 
 
 def calculate_special_signs(text):
     # Calculate no of occurrences of @ ! # and ? and links
     tokenizer1 = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
     tokenizer2 = nltk.RegexpTokenizer(r'\w+')
-    return text.count("@"), text.count("!"), text.count("#"), text.count("?"), len(tokenizer1.tokenize(text)), \
+    return [text.count("@"), text.count("!"), text.count("#"), text.count("?"), len(tokenizer1.tokenize(text)),
            0 if not list(map(lambda x: len(x), tokenizer2.tokenize(text))) else reduce((lambda x, y: x + y), list(
-               map(lambda x: len(x), tokenizer2.tokenize(text)))) / len(tokenizer2.tokenize(text)), \
+               map(lambda x: len(x), tokenizer2.tokenize(text)))) / len(tokenizer2.tokenize(text)),
            0 if not len(tokenizer2.tokenize(text)) else len([w for w in tokenizer2.tokenize(text) if w.lower()
-                in stopwords.words('english')]) / len(tokenizer2.tokenize(text))
+                in stopwords.words('english')]) / len(tokenizer2.tokenize(text))]
+
+
+def check_num(text):
+    return 0 if not re.search(r'^\s*\d+', text) else 1
+
+
+def check_5w1h(text):
+    return 0 if not re.search(r'^\s*(?:who|why|what|when|where|how)', text.lower()) else 1
