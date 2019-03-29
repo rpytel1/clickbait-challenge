@@ -100,7 +100,7 @@ def apply_stemming(data):
 def link_and_replace(tokenizer, entry, name):
     links = tokenizer.tokenize(entry[name])
     for link in links:
-        entry[name] = entry[name].replace(link, 'url')
+        entry[name] = entry[name].replace(link, '[url]')
     return entry
 
 
@@ -110,20 +110,50 @@ def find_links(data):
     for entry in data:
         links = tokenizer.tokenize(entry['postText'][0])
         for link in links:
-            entry['postText'][0] = entry['postText'][0].replace(link, 'url')
+            entry['postText'][0] = entry['postText'][0].replace(link, '[url]')
         entry = link_and_replace(tokenizer, entry, 'targetTitle')
         entry = link_and_replace(tokenizer, entry, 'targetDescription')
         entry = link_and_replace(tokenizer, entry, 'targetKeywords')
         for ind, par in enumerate(entry['targetParagraphs']):
             links = tokenizer.tokenize(par)
             for link in links:
-                entry['targetParagraphs'][ind] = entry['targetParagraphs'][ind].replace(link, 'url')
+                entry['targetParagraphs'][ind] = entry['targetParagraphs'][ind].replace(link, '[url]')
         for ind, par in enumerate(entry['targetCaptions']):
             links = tokenizer.tokenize(par)
             for link in links:
-                entry['targetCaptions'][ind] = entry['targetCaptions'][ind].replace(link, 'url')
+                entry['targetCaptions'][ind] = entry['targetCaptions'][ind].replace(link, '[url]')
         output_data.append(entry)
     return output_data
+
+
+def link_and_remove(tokenizer, entry, name):
+    links = tokenizer.tokenize(entry[name])
+    for link in links:
+        entry[name] = entry[name].replace(link, '')
+    return entry
+
+
+def remove_links(data):
+    output_data = []
+    tokenizer = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
+    for entry in data:
+        links = tokenizer.tokenize(entry['postText'][0])
+        for link in links:
+            entry['postText'][0] = entry['postText'][0].replace(link, '')
+        entry = link_and_remove(tokenizer, entry, 'targetTitle')
+        entry = link_and_remove(tokenizer, entry, 'targetDescription')
+        entry = link_and_remove(tokenizer, entry, 'targetKeywords')
+        for ind, par in enumerate(entry['targetParagraphs']):
+            links = tokenizer.tokenize(par)
+            for link in links:
+                entry['targetParagraphs'][ind] = entry['targetParagraphs'][ind].replace(link, '')
+        for ind, par in enumerate(entry['targetCaptions']):
+            links = tokenizer.tokenize(par)
+            for link in links:
+                entry['targetCaptions'][ind] = entry['targetCaptions'][ind].replace(link, '')
+        output_data.append(entry)
+    return output_data
+
 
 def apply_lower(data):
     text = data["targetTitle"]
@@ -131,8 +161,6 @@ def apply_lower(data):
     entities = tokenizer.tokenize(text)
     tagged_text = pos_tag(entities)
     tagged_text_chunk = ne_chunk(tagged_text)
-    # print(entities)
-
     entities = []
     for i in tagged_text_chunk:
         if type(i) == Tree:
