@@ -3,7 +3,7 @@ import json
 import jsonpickle as jsonpickle
 
 from feature_extraction.services import image_service, common_words_service, time_service, behaviour_analysis_service, \
-    cosine_similiarity_service, sentiment_analysis_service, article_service, clickbait_words_service
+    cosine_similiarity_service, article_service, clickbait_words_service, dependecies_service
 from feature_extraction.services.formality_service import calculate_all_formality_features
 from feature_extraction.services.word_service import WordService
 from model.model import Model
@@ -28,6 +28,8 @@ def extract_features(data):
             add_cosine_similarities(model, entry)
             add_sentiment_features(model, entry)
             add_clickbait_phrases_check(model, entry)
+            add_no_of_nouns(model, entry)
+
         else:
             feat_names.extend(add_image_related_features(model, entry))
             feat_names.extend(add_linguistic_analysis_features(model, entry))
@@ -38,6 +40,7 @@ def extract_features(data):
             feat_names.extend(add_cosine_similarities(model, entry))
             feat_names.extend(add_sentiment_features(model, entry))
             feat_names.append(add_clickbait_phrases_check(model, entry))
+            feat_names.extend(add_no_of_nouns(model ,entry))
             print(len(feat_names))
             feat_dict = {}
             for j in range(len(feat_names)):
@@ -89,6 +92,11 @@ def add_article_properties_features(model, entry):
     model.features.extend(article_service.calculate_article_features(entry))
     return article_service.get_feat_names()
 
+
+def add_no_of_nouns(model, entry):
+    model.features.extend(dependecies_service.add_no_nouns(entry))
+    # print(dependecies_service.add_no_nouns(entry))
+    return dependecies_service.get_feat_names()
 
 def add_cosine_similarities(model, entry):
     model.features.extend(cosine_similiarity_service.calculate_cosine_similiarity(entry))

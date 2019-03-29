@@ -1,5 +1,6 @@
 from nltk.corpus import stopwords
 import nltk
+from nltk import ne_chunk, pos_tag, word_tokenize, Tree
 from nltk.stem import PorterStemmer
 
 
@@ -81,9 +82,9 @@ def apply_stemming(data):
         words = tokenizer.tokenize(entry['postText'][0])
         for word in words:
             entry['postText'][0] = entry['postText'][0].replace(word, ps.stem(word.lower()))
-        entry = stem_and_replace(tokenizer, entry, 'targetTitle')
-        entry = stem_and_replace(tokenizer, entry, 'targetDescription')
-        entry = stem_and_replace(tokenizer, entry, 'targetKeywords')
+        entry = stem_and_replace(tokenizer, ps, entry, 'targetTitle')
+        entry = stem_and_replace(tokenizer, ps, entry, 'targetDescription')
+        entry = stem_and_replace(tokenizer, ps, entry, 'targetKeywords')
         for ind, par in enumerate(entry['targetParagraphs']):
             words = tokenizer.tokenize(par)
             for word in words:
@@ -123,3 +124,20 @@ def find_links(data):
                 entry['targetCaptions'][ind] = entry['targetCaptions'][ind].replace(link, 'url')
         output_data.append(entry)
     return output_data
+
+def apply_lower(data):
+    text = data["targetTitle"]
+    tokenizer = nltk.RegexpTokenizer('\w+')
+    entities = tokenizer.tokenize(text)
+    tagged_text = pos_tag(entities)
+    tagged_text_chunk = ne_chunk(tagged_text)
+    # print(entities)
+
+    entities = []
+    for i in tagged_text_chunk:
+        if type(i) == Tree:
+            for j in range(len(i)):
+                entities.append(i[j][0])
+        else:
+            entities.append(i[0].lower())
+    return entities
