@@ -1,6 +1,3 @@
-from nltk import RegexpTokenizer
-
-tokenizer = RegexpTokenizer(r'\w+')
 clickbait_words = [
     "A Single",
     "Absolutely",
@@ -78,13 +75,11 @@ clickbait_words = [
 
 def get_clickbait_words_features(entry):
     num_clickbaits_in_post = 0
-    words = [x for x in tokenizer.tokenize(entry["postText"][0])]
-    for word in words:
-        if word in clickbait_words:
-            num_clickbaits_in_post += 1
-    return num_clickbaits_in_post
+    for w in clickbait_words:
+        num_clickbaits_in_post += entry['postText'][0].count(w)*len(w)
+    return 0 if not entry['postText'][0] else num_clickbaits_in_post/len(entry['postText'][0])
 
 
 def get_feat_names():
-    return "num_of_clickbait words"
+    return "num_of_clickbait_words"
 
