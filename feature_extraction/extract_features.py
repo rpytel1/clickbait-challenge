@@ -110,7 +110,6 @@ def add_sentiment_features(model, entry):
 
 def add_clickbait_phrases_check(model, entry):
     model.features.append(clickbait_words_service.get_clickbait_words_features(entry))
-    print(model.features)
     return clickbait_words_service.get_feat_names()
 
 
