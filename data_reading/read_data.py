@@ -15,7 +15,7 @@ def read_data(filename):
 print('Dataset Reading...')
 data = read_data('../data/clickbait-training/instances.jsonl')
 
-# just preprocessing steps -stop word removal, porter stemming, replacing numbers and urls-
+# just preprocessing steps -- stop word removal, porter stemming, replacing numbers and urls --
 print('Data preprocessing')
 non_stop_word_data = preprocess_data.remove_stop_words(data)
 stemmed_data = preprocess_data.apply_stemming(non_stop_word_data)

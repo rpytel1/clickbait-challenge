@@ -5,7 +5,7 @@ from nltk.corpus import stopwords
 
 
 def calculate_all_behaviour_features(entry):
-    behaviour_post_title = calculate_special_signs(entry["postText"])
+    behaviour_post_title = calculate_special_signs(entry["postText"][0])
     behaviour_post_image = calculate_special_signs(get_text_from_image(entry))
     behaviour_article_title = calculate_special_signs(entry["targetTitle"])
     behaviour_post_desc = calculate_special_signs(entry["targetDescription"])
@@ -49,5 +49,5 @@ def calculate_special_signs(text):
     return text.count("@"), text.count("!"), text.count("#"), text.count("?"), len(tokenizer1.tokenize(text)), \
            0 if not list(map(lambda x: len(x), tokenizer2.tokenize(text))) else reduce((lambda x, y: x + y), list(
                map(lambda x: len(x), tokenizer2.tokenize(text)))) / len(tokenizer2.tokenize(text)), \
-            len([w for w in tokenizer2.tokenize(text) if w.lower() in stopwords.words('english')])\
-            / len(tokenizer2.tokenize(text))
+           0 if not len(tokenizer2.tokenize(text)) else len([w for w in tokenizer2.tokenize(text) if w.lower()
+                in stopwords.words('english')]) / len(tokenizer2.tokenize(text))

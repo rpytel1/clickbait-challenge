@@ -1,9 +1,9 @@
 import json
-
-import jsonpickle as jsonpickle
+import pickle
 
 from feature_extraction.services import image_service, common_words_service, time_service, behaviour_analysis_service, \
-    cosine_similiarity_service, article_service, clickbait_words_service, dependecies_service
+    cosine_similiarity_service, article_service, clickbait_words_service, dependecies_service, \
+    sentiment_analysis_service
 from feature_extraction.services.formality_service import calculate_all_formality_features
 from feature_extraction.services.word_service import WordService
 from model.model import Model
@@ -115,6 +115,5 @@ def add_clickbait_phrases_check(model, entry):
 
 
 def save_models(model_lists):
-    with open('data.txt', 'w') as f:
-        encoded_dictionary = jsonpickle.encode(model_lists)
-        json.dump(encoded_dictionary, f)
+    with open('data.obj', 'wb') as f:
+        pickle.dump(model_lists, f)
