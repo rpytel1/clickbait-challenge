@@ -50,9 +50,9 @@ def get_feat_names():
 
 
 def calculate_special_signs(text):
-    # Calculate no of occurrences of @ ! # and ? and links
+    # Calculate no of occurrences of @ ! # and ? and links, avg word length and fraction of stopwords
     tokenizer1 = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
-    tokenizer2 = nltk.RegexpTokenizer(r'\w+')
+    tokenizer2 = nltk.RegexpTokenizer(r'\w+')  # TODO: check the appropriateness of such regexp
     return [text.count("@"), text.count("!"), text.count("#"), text.count("?"), len(tokenizer1.tokenize(text)),
            0 if not list(map(lambda x: len(x), tokenizer2.tokenize(text))) else reduce((lambda x, y: x + y), list(
                map(lambda x: len(x), tokenizer2.tokenize(text)))) / len(tokenizer2.tokenize(text)),

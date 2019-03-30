@@ -1,5 +1,4 @@
 from nltk import RegexpTokenizer
-
 from feature_extraction.services.image_service import get_text_from_image
 
 tokenizer = RegexpTokenizer(r'\w+')

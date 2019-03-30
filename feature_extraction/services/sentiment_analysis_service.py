@@ -47,7 +47,8 @@ def calculate_sentiment_features(str_list):
             index += 1
     matrix = np.array(sentiment_list)
     num_words = len(tokenizer.tokenize(" ".join(str_list)))
-    return get_mode(sentiment_list), matrix.mean(), num_extremes_positive / num_words, num_extremes_negative / num_words, max(syntactic_dist_list)
+    return get_mode(sentiment_list), matrix.mean(), num_extremes_positive / num_words, num_extremes_negative / num_words\
+        , max(syntactic_dist_list)
 
 
 def extract_sentiments_per_words(s):
@@ -73,6 +74,7 @@ def get_mode(lst):
     d_mem_count = Counter(lst)
     return d_mem_count.most_common()[0][0]
 
+
 # no keywords
 def calculate_all_sentiment_features(entry):
     post_title_sentiment = calculate_sentiment_features([entry["postText"][0]])
@@ -89,10 +91,10 @@ def get_feat_names():
     return ["avg_sentiment_post_text", "mode_sentiment_post_text",
             "num_of_positives_post_text", "num_of_negatives_post_text", "syntactic_dist_post_text"
             "avg_sentiment_article_title", "mode_sentiment_article_title",
-            "num_of_positives_article_title", "num_of_negatives_article_title", "syntactic_dist_article_text"
+            "num_of_positives_article_title", "num_of_negatives_article_title", "syntactic_dist_article_title"
             "avg_sentiment_article_description", "mode_sentiment_article_description",
             "num_of_positives_article_description", "num_of_negatives_article_description",
-            "syntactic_dist_article_desc"
+            "syntactic_dist_article_description"
             "avg_sentiment_article_keywords", "mode_sentiment_article_keywords",
             "num_of_positives_article_keywords", "num_of_negatives_article_keywords", "syntactic_dist_article_keywords"
             "avg_sentiment_article_paragraphs", "mode_sentiment_article_paragraphs",

@@ -1,6 +1,7 @@
 import nltk
 from data_reading.preprocess_data import apply_lower
 
+
 def add_no_nouns(entry):
     entities = apply_lower(entry)
 
@@ -48,6 +49,6 @@ def add_no_nouns(entry):
 
 
 def get_feat_names():
-    return 'number of nouns', 'number of adverbs', 'number of dertemriners', 'number of personal pronouns', \
-           'number of wh determiners', 'number of possesive pronouns'
+    return 'number of nouns', 'number of adverbs', 'number of determiners', 'number of personal pronouns', \
+           'number of wh determiners', 'number of possessive pronouns'
 

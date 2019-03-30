@@ -22,7 +22,7 @@ def calculate_image_features(entry):
 
 
 def get_feat_names():
-    return'has image', 'text in image'
+    return 'has image', 'text in image'
 
 
 def get_text_from_image(entry):

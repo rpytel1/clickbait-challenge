@@ -12,15 +12,15 @@ class WordService:
         self.feat_list = []
 
     def calculate_all_linguistic_features(self, entry):
-        ## Initialization
+        # Initialization
         self.image_text = get_text_from_image(entry)
         self.create_matrices(entry)
 
-        ##Features
+        # Features
         all_ling = self.calculate_linguistic_features()
         ratios = self.calculate_ratios()
         diffs = self.calculate_diff_features()
-        return flatten_list_of_lists([all_ling, ratios, diffs]) + self.feat_list
+        return flatten_list_of_lists([all_ling, ratios, diffs])
 
     def calculate_linguistic_features(self):
         return unwrap_from_np_array(self.matrix_list)
@@ -46,12 +46,11 @@ class WordService:
                 ratio = np.divide(self.matrix_list[i], self.matrix_list[j],
                                   out=np.ones_like(self.matrix_list[j]) * (-1),
                                   where=np.multiply(self.matrix_list[i], self.matrix_list[j]) != 0)
-
                 diffs.append(ratio)
         return flatten_list_of_lists(diffs)
 
     def create_matrices(self, entry):
-        # create list of matrixes containing number of chars and num of words per each part
+        # create list of matrices containing number of chars and num of words per each part
 
         # Post title
         post_title_feats = np.array(self.calculate_basic_linguistic_features(entry["postText"][0]), dtype=np.float)
@@ -91,19 +90,14 @@ class WordService:
         self.matrix_list = [post_title_feats, article_title_feats, article_desc_feats, article_keyword_feats,
                             article_captions_feats, article_paragraph_feats, post_image_feats]
 
+    def get_feat_names(self):
+        return self.feat_list
+
     @staticmethod
     def calculate_basic_linguistic_features(text):
-        tokenizer = nltk.RegexpTokenizer(r'\w+')
+        tokenizer = nltk.RegexpTokenizer(r'\w+')  # TODO: maybe the regexp to be considered better
         words = tokenizer.tokenize(text)
         chars = "".join(words)
-        if not len(words):
-            len_words = 0
-        else:
-            len_words = len(words)
-
-        if not len(chars):
-            len_chars = 0
-        else:
-            len_chars = len(chars)
-
+        len_words = 0 if not len(words) else len(words)
+        len_chars = 0 if not len(chars) else len(chars)
         return len_words, len_chars

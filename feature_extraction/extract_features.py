@@ -35,13 +35,13 @@ def extract_features(data):
             feat_names.extend(add_image_related_features(model, entry))
             feat_names.extend(add_linguistic_analysis_features(model, entry))
             feat_names.extend(add_common_words_features(model, entry))
-            feat_names.append(add_time_features(model, entry))
+            feat_names.extend(add_time_features(model, entry))
             feat_names.extend(add_behaviour_analysis_features(model, entry))
             feat_names.extend(add_article_properties_features(model, entry))
             feat_names.extend(add_cosine_similarities(model, entry))
             feat_names.extend(add_sentiment_features(model, entry))
-            feat_names.append(add_clickbait_phrases_check(model, entry))
-            feat_names.append(add_slang_features(model, entry))
+            feat_names.extend(add_clickbait_phrases_check(model, entry))
+            feat_names.extend(add_slang_features(model, entry))
             feat_names.extend(add_no_of_nouns(model, entry))
             feat_names.extend(add_readability_features(model, entry))
             print(len(feat_names))
@@ -64,9 +64,8 @@ def add_image_related_features(model, entry):
 def add_linguistic_analysis_features(model, entry):
     # num, diffs and ratios for chars and words
     word_service = WordService()
-    feat_list = list(word_service.calculate_all_linguistic_features(entry))
-    model.features.extend(feat_list[:int(len(feat_list) / 2)])
-    return feat_list[int(len(feat_list) / 2):]
+    model.features.extend(word_service.calculate_all_linguistic_features(entry))
+    return word_service.get_feat_names()
 
 
 def add_common_words_features(model, entry):
@@ -80,7 +79,7 @@ def add_formality_features(model, entry):
 
 def add_time_features(model, entry):
     # calculate post creation hour?
-    model.features.append(time_service.calculate_time_features(entry))
+    model.features.extend(time_service.calculate_time_features(entry))
     return time_service.get_feat_names()
 
 
@@ -113,7 +112,7 @@ def add_sentiment_features(model, entry):
 
 
 def add_clickbait_phrases_check(model, entry):
-    model.features.append(clickbait_words_service.get_clickbait_words_features(entry))
+    model.features.extend(clickbait_words_service.get_clickbait_words_features(entry))
     return clickbait_words_service.get_feat_names()
 
 
