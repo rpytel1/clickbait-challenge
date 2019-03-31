@@ -1,18 +1,19 @@
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import make_scorer, mean_squared_error
-from sklearn.model_selection import RandomizedSearchCV
+from sklearn.model_selection import RandomizedSearchCV, StratifiedShuffleSplit
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
 
 def rf_randomized_search(X, y):
     mse_scorer = make_scorer(mean_squared_error)
+    sss = StratifiedShuffleSplit(n_splits=10, random_state=42)
 
     # scaler = StandardScaler().fit(X)
     # X = scaler.transform(X)
 
     # Number of trees in random forest
-    n_estimators = [int(x) for x in np.linspace(start=200, stop=2000, num=10)]
+    n_estimators = [int(x) for x in np.linspace(start=10, stop=1000, num=10)]
     # Number of features to consider at every split
     max_features = ['auto', 'sqrt']
     # Maximum number of levels in tree
@@ -30,13 +31,14 @@ def rf_randomized_search(X, y):
                    'max_depth': max_depth,
                    'min_samples_split': min_samples_split,
                    'min_samples_leaf': min_samples_leaf,
-                   'bootstrap': bootstrap}
+                   'bootstrap': bootstrap
+                   }
 
     n_iter_search = 10
     random_search = RandomizedSearchCV(RandomForestRegressor(), param_distributions=random_grid,
                                        n_iter=n_iter_search,
                                        scoring={'mse': mse_scorer},
-                                       cv=3, refit='mse', verbose=2, n_jobs=-1, random_state=42)
+                                       cv=sss, refit='mse', verbose=2, n_jobs=-1, random_state=42)
 
     random_search.fit(X, y)
     print(random_search.best_params_)

@@ -1,4 +1,5 @@
 import json
+import pickle
 
 import jsonpickle
 import pandas as pd
@@ -6,10 +7,9 @@ import pandas as pd
 
 def get_features_and_labels():
 
-    filename = "../../data_reading/data.txt"
-    with open(filename) as json_file:
-        data_encoded = json.load(json_file)
-        data = jsonpickle.decode(data_encoded)
+    filename = "../../data_reading/data.obj"
+    with open(filename, 'rb') as json_file:
+        data = pickle.load(json_file)
 
     post_dict = {}
     for post in data:
