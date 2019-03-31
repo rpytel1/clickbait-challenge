@@ -3,8 +3,9 @@ import pickle
 
 from feature_extraction.services import image_service, common_words_service, time_service, behaviour_analysis_service, \
     cosine_similiarity_service, article_service, clickbait_words_service, dependecies_service, \
-    sentiment_analysis_service, slang_service, readability_service
+    slang_service, readability_service, ngrams_service, sentiment_analysis_service
 from feature_extraction.services.formality_service import calculate_all_formality_features
+from feature_extraction.services.ngrams_service import find_final_ngrams
 from feature_extraction.services.word_service import WordService
 from model.model import Model
 
@@ -13,6 +14,8 @@ def extract_features(data):
     model_lists = []
     feat_names = []
     i = 0
+    final_ngrams = find_final_ngrams(data)
+
     for entry in data:
         print(i)
         model = Model(index=entry["id"])
@@ -31,6 +34,8 @@ def extract_features(data):
             add_no_of_nouns(model, entry)
             add_slang_features(model, entry)
             add_readability_features(model, entry)
+            add_ngrams(model, entry, final_ngrams)
+
         else:
             feat_names.extend(add_image_related_features(model, entry))
             feat_names.extend(add_linguistic_analysis_features(model, entry))
@@ -44,6 +49,9 @@ def extract_features(data):
             feat_names.extend(add_slang_features(model, entry))
             feat_names.extend(add_no_of_nouns(model, entry))
             feat_names.extend(add_readability_features(model, entry))
+            add_ngrams(model, entry, final_ngrams)
+            feat_names.extend([k for i in final_ngrams for k in i])
+
             print(len(feat_names))
             feat_dict = {}
             for j in range(len(feat_names)):
@@ -125,6 +133,10 @@ def add_slang_features(model, entry):
 def add_readability_features(model, entry):
     model.features.extend(readability_service.get_readability(entry))
     return readability_service.get_feat_names()
+
+
+def add_ngrams(model, entry, final_ngrams):
+    model.features.extend(ngrams_service.get_all_ngrams(entry, final_ngrams))
 
 
 def save_models(model_lists):
