@@ -16,7 +16,7 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
     model_lists = []
     feat_names = []
     i = 0
-    final_ngrams = find_final_ngrams(data)
+    final_ngrams = find_final_ngrams(ngram_data)
 
     for raw, replaced, stemmed, removed, all_in, ngramish, no_link in \
             zip(data, num_link_replaced_data, stemmed_no_link_data, num_link_removed_data, all_in_data, ngram_data, removed_link_data):
