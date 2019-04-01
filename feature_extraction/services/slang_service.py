@@ -1,15 +1,15 @@
 import nltk
+from nltk import word_tokenize
 
 with open("../feature_extraction/resources/slang_words.txt", encoding="utf-8") as f:
     content = f.readlines()
 slang_list = [x.strip() for x in content]
-tokenizer = nltk.RegexpTokenizer(r'\w+')
 
 
 def calculate_num_slang_words(text):
     if text == "":
         return 0
-    words = tokenizer.tokenize(text)
+    words = word_tokenize(text)
     is_slang_list = [word in slang_list for word in words]
     return is_slang_list.count(True)
 

@@ -16,12 +16,27 @@ print('Dataset Reading...')
 data = read_data('../data/clickbait-training/instances.jsonl')
 
 # just preprocessing steps -- stop word removal, porter stemming, replacing numbers and urls --
-print('Data preprocessing')
+print('Data preprocessing...')
+
+print('Stopword Removal')
 non_stop_word_data = preprocess_data.remove_stop_words(data)
-stemmed_data = preprocess_data.apply_stemming(non_stop_word_data)
-num_replaced_data = preprocess_data.replace_numbers(stemmed_data)
-tagged_link_data = preprocess_data.find_links(num_replaced_data)
-# no_link_data = preprocess_data.remove_links(num_replaced_data)
+
+print('Replacing numbers with [n] and links with [url]')
+num_link_replaced_data = preprocess_data.replace_numbers(preprocess_data.find_links(data))
+
+print('Preparing data for ngrams')
+ngram_data = preprocess_data.apply_stemming(num_link_replaced_data)
+
+print('Stemming')
+removed_link_data = preprocess_data.remove_links(data)
+stemmed_no_link_data = preprocess_data.apply_stemming(removed_link_data)
+
+print('Removing links and numbers from alphanumerical words')
+num_link_removed_data = preprocess_data.remove_numbers(removed_link_data)
+
+print('Stopword Removal -> Removing links -> Stemming -> Replacing')
+all_in_data = preprocess_data.replace_numbers(preprocess_data.apply_stemming(preprocess_data.remove_links(non_stop_word_data)))
 
 print('Extracting Features...')
-extract_features(data)
+extract_features(data, num_link_replaced_data, stemmed_no_link_data,
+                 num_link_removed_data, all_in_data, ngram_data, removed_link_data)

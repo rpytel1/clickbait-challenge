@@ -60,7 +60,8 @@ def num_and_remove(tokenizer, entry):
 
 def remove_numbers(data):
     tokenizer = nltk.RegexpTokenizer(r'\w+')
-    for entry in data:
+    for count, entry in enumerate(data):
+        print(count)
         entry['postText'][0] = num_and_remove(tokenizer, entry['postText'][0])
         entry['targetTitle'] = num_and_remove(tokenizer, entry['targetTitle'])
         entry['targetDescription'] = num_and_remove(tokenizer, entry['targetDescription'])
@@ -80,9 +81,10 @@ def stem_and_replace(tokenizer, stemmer, entry):
 
 
 def apply_stemming(data):
-    tokenizer = nltk.RegexpTokenizer(r'\w+')
+    tokenizer = nltk.RegexpTokenizer(r'\w+|[\[\w\]]+')
     ps = PorterStemmer()
-    for entry in data:
+    for count, entry in enumerate(data):
+        print(count)
         entry['postText'][0] = stem_and_replace(tokenizer, ps, entry['postText'][0])
         entry['targetTitle'] = stem_and_replace(tokenizer, ps, entry['targetTitle'])
         entry['targetDescription'] = stem_and_replace(tokenizer, ps, entry['targetDescription'])
@@ -103,7 +105,8 @@ def link_and_replace(tokenizer, entry):
 
 def find_links(data):
     tokenizer = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
-    for entry in data:
+    for count, entry in enumerate(data):
+        print(count)
         entry['postText'][0] = link_and_replace(tokenizer, entry['postText'][0])
         entry['targetTitle'] = link_and_replace(tokenizer, entry['targetTitle'])
         entry['targetDescription'] = link_and_replace(tokenizer, entry['targetDescription'])
@@ -124,7 +127,8 @@ def link_and_remove(tokenizer, entry):
 
 def remove_links(data):
     tokenizer = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
-    for entry in data:
+    for count, entry in enumerate(data):
+        print(count)
         entry['postText'][0] = link_and_remove(tokenizer, entry['postText'][0])
         entry['targetTitle'] = link_and_remove(tokenizer, entry['targetTitle'])
         entry['targetDescription'] = link_and_remove(tokenizer, entry['targetDescription'])

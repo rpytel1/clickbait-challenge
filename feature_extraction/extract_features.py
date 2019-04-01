@@ -11,48 +11,52 @@ from feature_extraction.services.word_service import WordService
 from model.model import Model
 
 
-def extract_features(data):
+def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
+                     num_link_removed_data, all_in_data, ngram_data, removed_link_data):
     model_lists = []
     feat_names = []
     i = 0
     final_ngrams = find_final_ngrams(data)
 
-    for entry in data:
+    print('Extracting features from raw data')
+    for raw, replaced, stemmed, removed, all_in, ngramish, no_link in \
+            zip(data, num_link_replaced_data, stemmed_no_link_data, num_link_removed_data, all_in_data, ngram_data, removed_link_data):
         print(i)
-        model = Model(index=entry["id"])
+        if not raw["id"] == replaced["id"] == stemmed["id"] == removed["id"] == all_in["id"] == ngramish["id"] == no_link["id"]:
+            print('-------------- Malakia --------------')
+            break
+        model = Model(index=raw["id"])
         if i != 0:
-            add_image_related_features(model, entry)
-            add_linguistic_analysis_features(model, entry)
-            add_common_words_features(model, entry)
-            # TODO: Formality check takes ages!!
-            # add_formality_features(model,entry)
-            add_time_features(model, entry)
-            add_behaviour_analysis_features(model, entry)
-            add_article_properties_features(model, entry)
-            add_cosine_similarities(model, entry)
-            add_sentiment_features(model, entry)
-            add_clickbait_phrases_check(model, entry)
-            add_no_of_pos_tagging(model, entry)
-            add_pattern_pos(model, entry)
-            add_slang_features(model, entry)
-            add_readability_features(model, entry)
-            add_ngrams(model, entry, final_ngrams)
+            add_image_related_features(model, raw)
+            add_linguistic_analysis_features(model, replaced)
+            add_common_words_features(model, stemmed)
+            add_time_features(model, raw)
+            add_behaviour_analysis_features(model, raw)
+            add_article_properties_features(model, raw)
+            add_cosine_similarities(model, all_in)
+            add_sentiment_features(model, replaced)
+            add_clickbait_phrases_check(model, raw)
+            add_no_of_pos_tagging(model, removed)
+            add_pattern_pos(model, removed)
+            add_slang_features(model, raw)
+            add_readability_features(model, no_link)
+            add_ngrams(model, ngramish, final_ngrams)
 
         else:
-            feat_names.extend(add_image_related_features(model, entry))
-            feat_names.extend(add_linguistic_analysis_features(model, entry))
-            feat_names.extend(add_common_words_features(model, entry))
-            feat_names.extend(add_time_features(model, entry))
-            feat_names.extend(add_behaviour_analysis_features(model, entry))
-            feat_names.extend(add_article_properties_features(model, entry))
-            feat_names.extend(add_cosine_similarities(model, entry))
-            feat_names.extend(add_sentiment_features(model, entry))
-            feat_names.extend(add_clickbait_phrases_check(model, entry))
-            feat_names.extend(add_slang_features(model, entry))
-            feat_names.extend(add_no_of_pos_tagging(model, entry))
-            feat_names.append(add_pattern_pos(model, entry))
-            feat_names.extend(add_readability_features(model, entry))
-            add_ngrams(model, entry, final_ngrams)
+            feat_names.extend(add_image_related_features(model, raw))
+            feat_names.extend(add_linguistic_analysis_features(model, replaced))
+            feat_names.extend(add_common_words_features(model, stemmed))
+            feat_names.extend(add_time_features(model, raw))
+            feat_names.extend(add_behaviour_analysis_features(model, raw))
+            feat_names.extend(add_article_properties_features(model, raw))
+            feat_names.extend(add_cosine_similarities(model, all_in))
+            feat_names.extend(add_sentiment_features(model, replaced))
+            feat_names.extend(add_clickbait_phrases_check(model, raw))
+            feat_names.extend(add_slang_features(model, removed))
+            feat_names.extend(add_no_of_pos_tagging(model, removed))
+            feat_names.append(add_pattern_pos(model, raw))
+            feat_names.extend(add_readability_features(model, no_link))
+            add_ngrams(model, ngramish, final_ngrams)
             feat_names.extend([k for i in final_ngrams for k in i])
 
             print(len(feat_names))
