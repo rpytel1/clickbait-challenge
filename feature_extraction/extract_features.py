@@ -33,7 +33,7 @@ def extract_features(data):
             add_sentiment_features(model, entry)
             add_clickbait_phrases_check(model, entry)
             add_no_of_pos_tagging(model, entry)
-            add_pattern_pos(model,entry)
+            add_pattern_pos(model, entry)
             add_slang_features(model, entry)
             add_readability_features(model, entry)
             add_ngrams(model, entry, final_ngrams)
@@ -111,9 +111,11 @@ def add_no_of_pos_tagging(model, entry):
     # print(dependecies_service.add_no_nouns(entry))
     return dependecies_service.get_feat_names()
 
+
 def add_pattern_pos(model,entry):
     model.features.extend(patternPOS_service.pattern_of_pos(entry))
     return patternPOS_service.get_feat_names()
+
 
 def add_cosine_similarities(model, entry):
     model.features.extend(cosine_similiarity_service.calculate_cosine_similiarity(entry))
