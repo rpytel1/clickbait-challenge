@@ -18,7 +18,6 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
     i = 0
     final_ngrams = find_final_ngrams(data)
 
-    print('Extracting features from raw data')
     for raw, replaced, stemmed, removed, all_in, ngramish, no_link in \
             zip(data, num_link_replaced_data, stemmed_no_link_data, num_link_removed_data, all_in_data, ngram_data, removed_link_data):
         print(i)
@@ -41,7 +40,6 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             add_slang_features(model, raw)
             add_readability_features(model, no_link)
             add_ngrams(model, ngramish, final_ngrams)
-
         else:
             feat_names.extend(add_image_related_features(model, raw))
             feat_names.extend(add_linguistic_analysis_features(model, replaced))
@@ -117,7 +115,7 @@ def add_no_of_pos_tagging(model, entry):
 
 
 def add_pattern_pos(model,entry):
-    model.features.extend(patternPOS_service.pattern_of_pos(entry))
+    model.features.append(patternPOS_service.pattern_of_pos(entry))
     return patternPOS_service.get_feat_names()
 
 
@@ -138,7 +136,6 @@ def add_clickbait_phrases_check(model, entry):
 
 def add_slang_features(model, entry):
     model.features.extend(slang_service.calculate_all_num_slang_words(entry))
-    print(model.features)
     return slang_service.get_feat_names()
 
 

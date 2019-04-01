@@ -21,9 +21,8 @@ def calculate_all_num_slang_words(entry):
     slang_words_post_keywords = calculate_num_slang_words(entry["targetKeywords"])
     slang_words_post_captions = calculate_num_slang_words(" ".join(entry["targetCaptions"]))
     slang_words_post_paragraphs = calculate_num_slang_words(" ".join(entry["targetParagraphs"]))
-    print([slang_words_post_title, slang_words_article_title, \
-            slang_words_post_desc, slang_words_post_keywords, slang_words_post_captions, slang_words_post_paragraphs]
-)
+    # print([slang_words_post_title, slang_words_article_title, \
+    #         slang_words_post_desc, slang_words_post_keywords, slang_words_post_captions, slang_words_post_paragraphs])
     return [slang_words_post_title, slang_words_article_title, \
             slang_words_post_desc, slang_words_post_keywords, slang_words_post_captions, slang_words_post_paragraphs]
 

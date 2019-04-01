@@ -5,26 +5,27 @@ from nltk.stem import PorterStemmer
 import re
 
 
-def check_and_remove(tokenizer, entry):
+def check_and_remove(tokenizer, entry, stopword_dict):
     words = tokenizer.tokenize(entry)
     for word in words:
-        if word.lower() in stopwords.words('english'):
+        if word.lower() in stopword_dict.keys():
             entry = entry.replace(word, '')
     return entry
 
 
 def remove_stop_words(data):
     tokenizer = nltk.RegexpTokenizer(r'\w+')
+    stopword_dict = {w: 1 for w in stopwords.words('english')}
     for count, entry in enumerate(data):
         print(count)
-        entry['postText'][0] = check_and_remove(tokenizer, entry['postText'][0])
-        entry['targetTitle'] = check_and_remove(tokenizer, entry['targetTitle'])
-        entry['targetDescription'] = check_and_remove(tokenizer, entry['targetDescription'])
-        entry['targetKeywords'] = check_and_remove(tokenizer, entry['targetKeywords'])
+        entry['postText'][0] = check_and_remove(tokenizer, entry['postText'][0], stopword_dict)
+        entry['targetTitle'] = check_and_remove(tokenizer, entry['targetTitle'], stopword_dict)
+        entry['targetDescription'] = check_and_remove(tokenizer, entry['targetDescription'], stopword_dict)
+        entry['targetKeywords'] = check_and_remove(tokenizer, entry['targetKeywords'], stopword_dict)
         for ind, par in enumerate(entry['targetParagraphs']):
-            entry['targetParagraphs'][ind] = check_and_remove(tokenizer, entry['targetParagraphs'][ind])
+            entry['targetParagraphs'][ind] = check_and_remove(tokenizer, entry['targetParagraphs'][ind], stopword_dict)
         for ind, par in enumerate(entry['targetCaptions']):
-            entry['targetCaptions'][ind] = check_and_remove(tokenizer, entry['targetCaptions'][ind])
+            entry['targetCaptions'][ind] = check_and_remove(tokenizer, entry['targetCaptions'][ind], stopword_dict)
     return data
 
 
@@ -69,7 +70,7 @@ def remove_numbers(data):
         for ind, par in enumerate(entry['targetParagraphs']):
             entry['targetParagraphs'][ind] = num_and_remove(tokenizer, entry['targetParagraphs'][ind])
         for ind, par in enumerate(entry['targetCaptions']):
-            entry['targetCaptions'][ind] = num_and_remove(tokenizer, entry['targetCaptions'])
+            entry['targetCaptions'][ind] = num_and_remove(tokenizer, entry['targetCaptions'][ind])
     return data
 
 

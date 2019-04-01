@@ -2,7 +2,6 @@ import textstat
 
 
 def get_readability(entry):
-    # TODO: chceck what happens if no entry is available
     readability_post_title = textstat.flesch_kincaid_grade(entry["postText"][0])
     readability_article_title = textstat.flesch_kincaid_grade(entry["targetTitle"])
     readability_post_desc = textstat.flesch_kincaid_grade(entry["targetDescription"])

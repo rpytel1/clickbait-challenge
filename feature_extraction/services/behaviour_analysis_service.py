@@ -2,7 +2,7 @@ from feature_extraction.services.image_service import get_text_from_image
 from functools import reduce
 import nltk
 from nltk.corpus import stopwords
-from data_reading.preprocess_data import remove_links
+from data_reading.preprocess_data import link_and_remove
 import re
 
 
@@ -183,7 +183,7 @@ def calculate_special_signs(text):
     # Calculate no of occurrences of @ ! # and ? and links, avg word length and fraction of stopwords
     tokenizer1 = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
     tokenizer2 = nltk.RegexpTokenizer(r'\w+')  # TODO: check the appropriateness of such regexp
-    no_links = remove_links(text)
+    no_links = link_and_remove(tokenizer1, text)
     return [text.count("@"), text.count("!"), text.count("#"), text.count("?"), text.count("*"),
             len(tokenizer1.tokenize(text)),
            0 if not list(map(lambda x: len(x), tokenizer2.tokenize(no_links))) else reduce((lambda x, y: x + y), list(
