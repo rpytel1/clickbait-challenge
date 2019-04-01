@@ -1,4 +1,6 @@
 import re
+import string
+
 from nltk import ngrams, FreqDist, RegexpTokenizer
 from nltk.corpus import stopwords
 
@@ -40,8 +42,9 @@ def extract_fourgrams(text_ngrams):
 def extract_ngrams(text):
     # preprocess text
     text = text.lower().replace('\n', " ")
-    text = re.sub('[^a-zA-Z0-9 \n\.]', '[_]', text)
-    text = re.sub('[-+]?\d*\.\d+|\d+', '[n]', text)
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    # text = re.sub('[^a-zA-Z0-9 \n\.]', '[_]', text)
+    # text = re.sub('[-+]?\d*\.\d+|\d+', '[n]', text)
 
     # word tokens
     tokenizer = RegexpTokenizer(r'\w+|[\[\w\]]+')
@@ -84,10 +87,6 @@ def calculate_all_ngrams(entry):
            targetParagraphs_unigrams, targetParagraphs_bigrams, targetParagraphs_trigrams, targetParagraphs_fourgrams
 
 
-def get_feat_names():
-    return "post_creation_hour", "is_weekend", "hour_of_day"
-
-
 def find_final_ngrams(data):
     # data = read_data('../../data/clickbait-training/instances.jsonl')
     possible_ngrams = [{} for _ in range(24)]
@@ -99,10 +98,11 @@ def find_final_ngrams(data):
                     possible_ngrams[ind][ngram_name] = 1
                 else:
                     possible_ngrams[ind][ngram_name] += 1
+    limits = [0.01, 0.005, 0.0025, 0.00125]
     for ind, category in enumerate(possible_ngrams):
         length = sum([v for k, v in category.items()])
         for key in list(category):
-            if possible_ngrams[ind][key] / length >= 0.005:
+            if possible_ngrams[ind][key] / length >= limits[ind%4]:
                 possible_ngrams[ind][key] /= length
             else:
                 del possible_ngrams[ind][key]
