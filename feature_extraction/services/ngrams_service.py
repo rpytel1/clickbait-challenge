@@ -1,6 +1,5 @@
-import re
 import string
-import numpy as np
+
 from nltk import ngrams, FreqDist, RegexpTokenizer
 from nltk.corpus import stopwords
 
@@ -66,9 +65,8 @@ def extract_ngrams(text):
 
 
 def calculate_all_ngrams(entry):
-    # targetKeywords_unigrams, targetKeywords_bigrams, targetKeywords_trigrams, targetKeywords_fourgrams = extract_ngrams(
-    #     entry["targetKeywords"])
-    # target_keywords = (entry["targetKeywords"]).split(',')
+    targetKeywords_unigrams, targetKeywords_bigrams, targetKeywords_trigrams, targetKeywords_fourgrams = extract_ngrams(
+        entry["targetKeywords"])
     postText_unigrams, postText_bigrams, postText_trigrams, postText_fourgrams = extract_ngrams(
         entry["postText"][0])
     targetTitle_unigrams, targetTitle_bigrams, targetTitle_trigrams, targetTitle_fourgrams = extract_ngrams(
@@ -80,7 +78,8 @@ def calculate_all_ngrams(entry):
     targetParagraphs_unigrams, targetParagraphs_bigrams, targetParagraphs_trigrams, targetParagraphs_fourgrams = extract_ngrams(
         " ".join(entry["targetParagraphs"]))
 
-    return postText_unigrams, postText_bigrams, postText_trigrams, postText_fourgrams, \
+    return targetKeywords_unigrams, targetKeywords_bigrams, targetKeywords_trigrams, targetKeywords_fourgrams,\
+           postText_unigrams, postText_bigrams, postText_trigrams, postText_fourgrams, \
            targetTitle_unigrams, targetTitle_bigrams, targetTitle_trigrams, targetTitle_fourgrams, \
            targetDescription_unigrams, targetDescription_bigrams, targetDescription_trigrams, targetDescription_fourgrams, \
            targetParagraphs_unigrams, targetParagraphs_bigrams, targetParagraphs_trigrams, targetParagraphs_fourgrams
@@ -88,30 +87,27 @@ def calculate_all_ngrams(entry):
 
 def find_final_ngrams(data):
     # data = read_data('../../data/clickbait-training/instances.jsonl')
-    possible_ngrams = [{} for _ in range(16)]
+    possible_ngrams = [{} for _ in range(20)]
     for entry in data:
         all_ngrams = calculate_all_ngrams(entry)
         for ind, ngram_dict in enumerate(all_ngrams):
             for ngram_name in ngram_dict:
-                if ngram_name not in possible_ngrams[ind]:
-                    possible_ngrams[ind][ngram_name] = 1
+                if str(ngram_name) not in possible_ngrams[ind]:
+                    possible_ngrams[ind][str(ngram_name)] = 1
                 else:
-                    possible_ngrams[ind][ngram_name] += 1
-    limits = [0.0005, 0.0001, 0.0001, 0.0001]
+                    possible_ngrams[ind][str(ngram_name)] += 1
+    limits = [0.003, 0.002, 0.003, 0.003]
+    delete_keys = []
     for ind, category in enumerate(possible_ngrams):
-        length = len(category)
-        temp = list(category.items())
-        temp.sort(key=lambda tup: tup[1], reverse=True)
-        possible_ngrams[ind] = dict(temp[:int(np.floor(limits[ind%4]*length))])
-        # length = sum([v for k, v in category.items()])
-        # for key in list(category):
-        #     if possible_ngrams[ind][key] / length >= limits[ind%4]:
-        #         possible_ngrams[ind][key] /= length
-        #     else:
-        #         del possible_ngrams[ind][key]
-    final_ngrams = possible_ngrams
-
-    return final_ngrams
+        length = sum([v for k, v in category.items()])
+        for key in category.keys():
+            if possible_ngrams[ind][str(key)] / length >= limits[ind%4]:
+                possible_ngrams[ind][str(key)] /= length
+            else:
+                delete_keys += [(ind, str(key))]
+    for tup in delete_keys:
+        del possible_ngrams[tup[0]][tup[1]]
+    return possible_ngrams
 
 
 def get_all_ngrams(entry, final_ngrams):
