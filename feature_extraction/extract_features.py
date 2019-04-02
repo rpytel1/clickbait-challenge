@@ -2,7 +2,7 @@ import json
 import pickle
 
 from feature_extraction.services import image_service, common_words_service, time_service, behaviour_analysis_service, \
-cosine_similiarity_service, article_service, clickbait_words_service, dependecies_service, patternPOS_service, \
+cosine_similiarity_service, article_service, clickbait_words_service,  dependecies_service, patternPOS_service,\
 slang_service, readability_service, ngrams_service, sentiment_analysis_service
 
 from feature_extraction.services.formality_service import calculate_all_formality_features
@@ -54,9 +54,9 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             feat_names.extend(add_cosine_similarities(model, all_in))
             feat_names.extend(add_sentiment_features(model, replaced))
             feat_names.extend(add_clickbait_phrases_check(model, raw))
+            feat_names.extend(add_no_of_pos_tagging(model, raw))
+            feat_names.append(add_pattern_pos(model, removed))
             feat_names.extend(add_slang_features(model, removed))
-            feat_names.extend(add_no_of_pos_tagging(model, removed))
-            feat_names.append(add_pattern_pos(model, raw))
             feat_names.extend(add_readability_features(model, no_link))
             add_ngrams(model, ngramish, final_ngrams)
             feat_names.extend([k for i in final_ngrams for k in i])

@@ -59,7 +59,7 @@ def add_no_nouns(entry):
         no_sing_present = no_sing_present / len(tagged_text)
 
     return no_nouns, no_adverb, no_determiner, no_personal_pronoun, no_wh_determiner, no_possessive_pronoun,\
-           no_past_participle, no_third_person, no_past_tense, no_past_tense, no_sing_present
+           no_past_participle, no_third_person, no_past_tense, no_sing_present
 
 
 def get_feat_names():

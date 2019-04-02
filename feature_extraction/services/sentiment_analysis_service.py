@@ -91,14 +91,14 @@ def calculate_all_sentiment_features(entry):
 
 def get_feat_names():
     return ["avg_sentiment_post_text", "mode_sentiment_post_text",
-            "num_of_positives_post_text", "num_of_negatives_post_text", "syntactic_dist_post_text"
+            "num_of_positives_post_text", "num_of_negatives_post_text", "syntactic_dist_post_text",
             "avg_sentiment_article_title", "mode_sentiment_article_title",
-            "num_of_positives_article_title", "num_of_negatives_article_title", "syntactic_dist_article_title"
+            "num_of_positives_article_title", "num_of_negatives_article_title", "syntactic_dist_article_title",
             "avg_sentiment_article_description", "mode_sentiment_article_description",
             "num_of_positives_article_description", "num_of_negatives_article_description",
-            "syntactic_dist_article_description"
+            "syntactic_dist_article_description",
             "avg_sentiment_article_keywords", "mode_sentiment_article_keywords",
-            "num_of_positives_article_keywords", "num_of_negatives_article_keywords", "syntactic_dist_article_keywords"
+            "num_of_positives_article_keywords", "num_of_negatives_article_keywords", "syntactic_dist_article_keywords",
             "avg_sentiment_article_paragraphs", "mode_sentiment_article_paragraphs",
             "num_of_positives_article_paragraphs", "num_of_negatives_article_paragraphs",
             "syntactic_dist_article_paragraphs"]
