@@ -18,6 +18,8 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
     i = 0
     final_ngrams = find_final_ngrams(ngram_data)
 
+    # POS_data = dependecies_service.create_POS_data(num_link_removed_data)
+    # final_pos_ngrams = find_final_ngrams(num_link_removed_data)
     for raw, replaced, stemmed, removed, all_in, ngramish, no_link in \
             zip(data, num_link_replaced_data, stemmed_no_link_data, num_link_removed_data, all_in_data, ngram_data, removed_link_data):
         print(i)
@@ -25,6 +27,7 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             print('-------------- Malakia --------------')
             break
         model = Model(index=raw["id"])
+        # POS_entry = dependecies_service.create_POS_entry(removed)
         if i != 0:
             add_image_related_features(model, raw)
             add_linguistic_analysis_features(model, replaced)
@@ -40,6 +43,7 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             add_slang_features(model, raw)
             add_readability_features(model, no_link)
             add_ngrams(model, ngramish, final_ngrams)
+            # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
         else:
             feat_names.extend(add_image_related_features(model, raw))
             feat_names.extend(add_linguistic_analysis_features(model, replaced))
@@ -56,6 +60,8 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             feat_names.extend(add_readability_features(model, no_link))
             add_ngrams(model, ngramish, final_ngrams)
             feat_names.extend([k for i in final_ngrams for k in i])
+            # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
+            # feat_names.extend([k for i in final_pos_ngrams for k in i])
 
             print(len(feat_names))
             feat_dict = {}
@@ -146,6 +152,10 @@ def add_readability_features(model, entry):
 
 def add_ngrams(model, entry, final_ngrams):
     model.features.extend(ngrams_service.get_all_ngrams(entry, final_ngrams))
+
+
+def add_POS_ngrams(model, entry, final_pos_ngrams):
+    model.features.extend(ngrams_service.get_all_ngrams(entry, final_pos_ngrams))
 
 
 def save_models(model_lists):
