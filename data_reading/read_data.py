@@ -66,6 +66,6 @@ removed_link_data = pickle.load(f)
 f.close()
 
 
-# print('Extracting Features...')
-# extract_features(no_html_data, num_link_replaced_data, stemmed_no_link_data,
-#                  num_link_removed_data, all_in_data, ngram_data, removed_link_data)
+print('Extracting Features...')
+extract_features(no_html_data, num_link_replaced_data, stemmed_no_link_data,
+                 num_link_removed_data, all_in_data, ngram_data, removed_link_data)

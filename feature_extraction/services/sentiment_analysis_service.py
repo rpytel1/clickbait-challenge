@@ -47,6 +47,8 @@ def calculate_sentiment_features(str_list):
             index += 1
     matrix = np.array(sentiment_list)
     num_words = len(tokenizer.tokenize(" ".join(str_list)))
+    if num_words == 0:
+        num_words=1
     return get_mode(sentiment_list), matrix.mean(), num_extremes_positive / num_words, num_extremes_negative / num_words\
         , max(syntactic_dist_list)
 
