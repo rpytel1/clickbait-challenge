@@ -3,13 +3,32 @@ import nltk
 from nltk import ne_chunk, pos_tag, Tree
 from nltk.stem import PorterStemmer
 import re
+import html
+
+
+def html_and_remove(entry):
+    return re.sub(r'<.*?>', '', html.unescape(entry))
+
+
+def remove_html_tags(data):
+    for count, entry in enumerate(data):
+        print(count)
+        entry['postText'][0] = html_and_remove(entry['postText'][0])
+        entry['targetTitle'] = html_and_remove(entry['targetTitle'])
+        entry['targetDescription'] = html_and_remove(entry['targetDescription'])
+        entry['targetKeywords'] = html_and_remove(entry['targetKeywords'])
+        for ind, par in enumerate(entry['targetParagraphs']):
+            entry['targetParagraphs'][ind] = html_and_remove(entry['targetParagraphs'][ind])
+        for ind, par in enumerate(entry['targetCaptions']):
+            entry['targetCaptions'][ind] = html_and_remove(entry['targetCaptions'][ind])
+    return data
 
 
 def check_and_remove(tokenizer, entry, stopword_dict):
     words = tokenizer.tokenize(entry)
     for word in words:
         if word.lower() in stopword_dict.keys():
-            entry = entry.replace(word, '')
+            entry = re.sub(r'\b'+word+r'\b', '', entry)
     return entry
 
 
@@ -32,12 +51,12 @@ def remove_stop_words(data):
 def check_and_replace(tokenizer, entry):
     numbers = tokenizer.tokenize(entry)
     for num in numbers:
-        entry = entry.replace(num, '[n]')
+        entry = re.sub(r'\b' + num + r'\b', '[n]', entry)
     return entry
 
 
 def replace_numbers(data):
-    tokenizer = nltk.RegexpTokenizer(r'[-+]?\d*\.\d+|\d+')
+    tokenizer = nltk.RegexpTokenizer(r'\b[-+]?\d+\.\d+\b|\b\d+\b')
     for count, entry in enumerate(data):
         print(count)
         entry['postText'][0] = check_and_replace(tokenizer, entry['postText'][0])
