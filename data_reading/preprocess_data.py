@@ -4,6 +4,18 @@ from nltk import ne_chunk, pos_tag, Tree
 from nltk.stem import PorterStemmer
 import re
 import html
+from nltk import StanfordPOSTagger, StanfordNERTagger
+from feature_extraction.resources import cList
+
+model_pos_tag = '../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
+jar_pos_tag = '../stanford-postagger-2018-10-16/stanford-postagger.jar'
+
+model_en_tag = '../stanford-ner-2018-10-16/classifiers/english.all.3class.distsim.crf.ser.gz'
+jar_en_tag = '../stanford-ner-2018-10-16/stanford-ner-3.9.2.jar'
+
+tagger_pos = StanfordPOSTagger(model_pos_tag, path_to_jar=jar_pos_tag, encoding='UTF-8')
+
+tagger_en = StanfordNERTagger(model_en_tag, path_to_jar=jar_en_tag, encoding='UTF-8')
 
 
 def html_and_remove(entry):
@@ -161,16 +173,42 @@ def remove_links(data):
 
 
 def apply_lower(data):
-    text = data["targetTitle"]
+    # text = data["targetTitle"]
+    text = data
     tokenizer = nltk.RegexpTokenizer('\w+')
     entities = tokenizer.tokenize(text)
-    tagged_text = pos_tag(entities)
-    tagged_text_chunk = ne_chunk(tagged_text)
-    entities = []
-    for i in tagged_text_chunk:
-        if type(i) == Tree:
-            for j in range(len(i)):
-                entities.append(i[j][0])
+
+    # # nltk entity recognizer
+    # tagged_text = pos_tag(entities)
+    # tagged_text_chunk = ne_chunk(tagged_text)
+    # entities = []
+    # for i in tagged_text_chunk:
+    #     if type(i) == Tree:
+    #         for j in range(len(i)):
+    #             entities.append(i[j][0])
+    #     else:
+    #         entities.append(i[0].lower())
+
+    # # Stanford entity recognizer
+
+    tagged_text_pos = tagger_pos.tag(entities)
+    tagged_text_en = tagger_en.tag(entities)
+    entities_en = []
+    j = 0
+
+    for i in tagged_text_en:
+        if i[1] != "O":
+            entities_en.append(tagged_text_pos[j][0])
         else:
-            entities.append(i[0].lower())
-    return entities
+            entities_en.append(tagged_text_pos[j][0].lower())
+        j += 1
+
+    # print(entities_en)
+
+    return entities_en
+
+def contractions(entry):
+    expand = cList.expandContractions(entry)
+    return expand
+
+
