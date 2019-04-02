@@ -99,3 +99,7 @@ ml/__pycache__/
 ml/svm/__pycache__/
 stanford-corenlp-full-2018-10-05/
 data_reading/__pycache__/
+/stanford-ner-2018-10-16/
+/stanford-postagger-full-2018-10-16/
+/stanford-postagger-2018-10-16/
+feature_extraction/resources/__pycache__/
