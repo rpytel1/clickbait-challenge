@@ -111,13 +111,13 @@ for ind, feature in enumerate([x for x in list(voting.items()) if x[1] <= statis
 final_X = np.column_stack(selected)
 print(final_X.shape[0], final_X.shape[1])
 
-f = open(r"selected.pkl", "wb")
+f = open(r"selected_with_pos.pkl", "wb")
 pickle.dump(final_X, f)
 pickle.dump(y_class, f)
 pickle.dump(y_reg, f)
 f.close()
 
-with open('selected_features_labels.json', 'w') as fp:
+with open('selected_features_labels_with_pos.json', 'w') as fp:
     json.dump(selected_feat_dict, fp)
 
 # # info gain ranking and values

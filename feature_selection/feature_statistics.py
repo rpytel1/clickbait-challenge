@@ -31,7 +31,7 @@ def find_indexes(feat_selected, feat_names_grouped):
 with open('../data_reading/feature_names_grouped.json') as json_file:
     feat_names_grouped = json.load(json_file)
 
-with open('selected_78/selected_features_labels.json') as json_file:
+with open('selected_79/selected_features_labels_with_pos.json') as json_file:
     feat_selected = json.load(json_file)
 
 print(get_statistics(feat_names_grouped, feat_selected))
