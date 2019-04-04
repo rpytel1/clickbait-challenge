@@ -5,6 +5,9 @@ import json
 
 model_pos_tag = '../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
 jar_pos_tag = '../stanford-postagger-2018-10-16/stanford-postagger.jar'
+# model_pos_tag = '../../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
+# jar_pos_tag = '../../stanford-postagger-2018-10-16/stanford-postagger.jar'
+
 tagger_pos = StanfordPOSTagger(model_pos_tag, path_to_jar=jar_pos_tag, encoding='UTF-8')
 
 def add_no_nouns(entry):
@@ -38,14 +41,22 @@ def add_no_nouns(entry):
             no_nouns += 1
         if tagged_text[n][1] == "RB":
             no_adverb += 1
-        if tagged_text[n][1] == "TD":
+        if tagged_text[n][1] == "DT":
             no_determiner += 1
-        if tagged_text[n][1] == "WTD":
+        if tagged_text[n][1] == "WDT":
             no_wh_determiner += 1
         if tagged_text[n][1] == "PRP":
             no_personal_pronoun += 1
         if tagged_text[n][1] == "PRP$":
             no_possessive_pronoun += 1
+        if tagged_text[n][1] == "VBN":
+            no_past_participle += 1
+        if tagged_text[n][1] == "VBZ":
+            no_third_person += 1
+        if tagged_text[n][1] == "VBD":
+            no_past_tense += 1
+        if tagged_text[n][1] == "VBP":
+            no_sing_present =+ 1
     if len(tagged_text) != 0:
         no_nouns = no_nouns/len(tagged_text)
         no_adverb = no_adverb/len(tagged_text)
@@ -115,21 +126,23 @@ def create_POS_entry(entry):
     return ' '.join(POS_list)
 
 
-# def read_data(filename):
-#     data = []
-#     with open(filename, encoding="utf-8") as f:
-#         for line in f:
-#             data.append(json.loads(line))
-#     return data
-#
-#
+def read_data(filename):
+    data = []
+    with open(filename, encoding="utf-8") as f:
+        for line in f:
+            data.append(json.loads(line))
+    return data
+
+
 # print('Dataset Reading...')
 # data = read_data('../../data/clickbait-training/instances.jsonl')
+# data_truth = read_data('../../data/clickbait-training/truth.jsonl')
 # POS_taggings = []
 # c = 0
 # for entry in data:
 #     POS_taggings.append(add_no_nouns(entry))
 #     print(POS_taggings[c])
+#     print(data_truth[c]['truthClass'])
 #     c +=1
 #
 #
