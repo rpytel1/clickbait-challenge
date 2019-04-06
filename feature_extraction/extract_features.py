@@ -16,7 +16,7 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
     model_lists = []
     feat_names = []
     i = 0
-    final_ngrams = find_final_ngrams(ngram_data)
+    final_ngrams = find_final_ngrams(ngram_data) # !!!!! remove ngram part from extraction all except Rafail
 
     # POS_data = dependecies_service.create_POS_data(num_link_removed_data)
     # final_pos_ngrams = find_final_ngrams(num_link_removed_data)
@@ -42,7 +42,7 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             add_pattern_pos(model, removed)
             add_slang_features(model, raw)
             add_readability_features(model, no_link)
-            add_ngrams(model, ngramish, final_ngrams)
+            add_ngrams(model, ngramish, final_ngrams) # !!!!! remove ngram part from extraction all except Rafail
             # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
         else:
             feat_names.extend(add_image_related_features(model, raw))
@@ -58,8 +58,8 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             feat_names.append(add_pattern_pos(model, removed))
             feat_names.extend(add_slang_features(model, removed))
             feat_names.extend(add_readability_features(model, no_link))
-            add_ngrams(model, ngramish, final_ngrams)
-            feat_names.extend([k for i in final_ngrams for k in i])
+            add_ngrams(model, ngramish, final_ngrams) # !!!!! remove ngram part from extraction all except Rafail
+            feat_names.extend([k for i in final_ngrams for k in i]) # !!!!! remove ngram part from extraction all except Rafail
             # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
             # feat_names.extend([k for i in final_pos_ngrams for k in i])
 
