@@ -15,7 +15,7 @@ def read_data(filename):
 
 
 # print('Dataset Reading...')
-# data = read_data('../data/clickbait-training/instances.jsonl')
+# data = read_data('../data/clickbait17-validation-170630/instances.jsonl')
 #
 # # just preprocessing steps -- stop word removal, porter stemming, replacing numbers and urls --
 # print('Data preprocessing...')
@@ -42,7 +42,7 @@ def read_data(filename):
 # print('Stopword Removal -> Removing links -> Stemming -> Replacing')
 # all_in_data = preprocess_data.replace_numbers(preprocess_data.apply_stemming(preprocess_data.remove_links(deepcopy(non_stop_word_data))))
 #
-# f = open(r"preprocessed.pkl", "wb")
+# f = open(r"preprocessed_big_corpus.pkl", "wb")
 # pickle.dump(data, f)
 # pickle.dump(no_html_data, f)
 # pickle.dump(num_link_replaced_data, f)
@@ -54,7 +54,7 @@ def read_data(filename):
 # f.close()
 
 print('Opening preprocessed data...')
-f = open("preprocessed.pkl", "rb")
+f = open("preprocessed_big_corpus.pkl", "rb") # put in here the file to load for extraction
 data = pickle.load(f)
 no_html_data = pickle.load(f)
 num_link_replaced_data = pickle.load(f)
