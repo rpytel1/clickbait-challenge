@@ -1,9 +1,11 @@
+import pickle
+
 import sklearn.metrics as skm
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, \
-    explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error
-from sklearn.model_selection import StratifiedShuffleSplit
+    explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
+from sklearn.model_selection import StratifiedShuffleSplit, StratifiedKFold
 
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
@@ -13,8 +15,13 @@ def normalized_mean_squared_error(truth, predictions):
     return skm.mean_squared_error(truth, predictions) / norm
 
 
-X, truthClass, thruthMean = get_features_and_labels()
-sss = StratifiedShuffleSplit(n_splits=10, random_state=42)
+# X, truthClass, thruthMean = get_features_and_labels()
+#
+with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
+    X = pickle.load(f)
+    truthClass = pickle.load(f)
+    thruthMean = pickle.load(f)
+sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
 # initialize regression evaluation metrics
 evs = 0
@@ -26,6 +33,7 @@ nmse = 0
 
 # initialize classification evaluation metrics
 accuracy = 0
+auc = 0
 precision = 0
 recall = 0
 f1 = 0
@@ -40,7 +48,11 @@ for train_index, test_index in sss.split(X, thruthMean):
     # X_train = std_scale.transform(X_train)
     # X_test = std_scale.transform(X_test)
 
-    clf = RandomForestRegressor(max_features=X_train.shape[1], max_depth=None, criterion="mse", n_jobs=-1)
+    # clf = RandomForestRegressor(n_estimators=230, min_samples_split=2, min_samples_leaf=2, max_features='auto',
+    #                             max_depth=60, bootstrap=False, n_jobs=-1)
+
+    clf = RandomForestRegressor(n_jobs=-1)
+
     clf.fit(X_train, thruthMean_train)
     thruthMean_pred = clf.predict(X_test)
 
@@ -58,6 +70,7 @@ for train_index, test_index in sss.split(X, thruthMean):
     print("(TN, FP, FN, TP) = {}".format((tn, fp, fn, tp)))
 
     accuracy += accuracy_score(truthClass_test, truthClass_pred)
+    auc += roc_auc_score(truthClass_test, truthClass_pred)
     precision += precision_score(truthClass_test, truthClass_pred)
     recall += recall_score(truthClass_test, truthClass_pred)
     f1 += f1_score(truthClass_test, truthClass_pred)
@@ -72,6 +85,7 @@ print("R2 score is ", r2 / 10)
 
 print('\n----------------Classification metrics-------------------------\n')
 print("Accuracy is ", accuracy / 10)
+print("AuC is", auc / 10)
 print("Precision is", precision / 10)
 print("Recall is", recall / 10)
 print("F1-core is ", f1 / 10)

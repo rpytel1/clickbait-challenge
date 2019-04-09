@@ -1,13 +1,15 @@
+import pickle
+
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import make_scorer, mean_squared_error
-from sklearn.model_selection import RandomizedSearchCV, StratifiedShuffleSplit
+from sklearn.model_selection import RandomizedSearchCV, StratifiedShuffleSplit, StratifiedKFold
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
 
 def rf_randomized_search(X, y):
     mse_scorer = make_scorer(mean_squared_error)
-    sss = StratifiedShuffleSplit(n_splits=10, random_state=42)
+    sss = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
     # scaler = StandardScaler().fit(X)
     # X = scaler.transform(X)
@@ -45,5 +47,11 @@ def rf_randomized_search(X, y):
 
 
 if __name__ == "__main__":
-    X, _, truthMean = get_features_and_labels()
+    # X, _, truthMean = get_features_and_labels()
+    #
+    with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
+        X = pickle.load(f)
+        truthClass = pickle.load(f)
+        truthMean = pickle.load(f)
+
     rf_randomized_search(X, truthMean)

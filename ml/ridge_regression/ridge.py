@@ -1,10 +1,12 @@
+import pickle
+
 import sklearn.metrics as skm
 import numpy as np
-from sklearn.ensemble import GradientBoostingRegressor
+from sklearn.linear_model import  Ridge
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, \
     explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
-from sklearn.model_selection import StratifiedShuffleSplit
-from xgboost import XGBRegressor
+from sklearn.model_selection import StratifiedShuffleSplit, StratifiedKFold
+
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
 
@@ -14,7 +16,13 @@ def normalized_mean_squared_error(truth, predictions):
 
 
 X, truthClass, thruthMean = get_features_and_labels()
-sss = StratifiedShuffleSplit(n_splits=10, random_state=42)
+
+# with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
+#     X = pickle.load(f)
+#     truthClass = pickle.load(f)
+#     thruthMean = pickle.load(f)
+
+sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
 # initialize regression evaluation metrics
 evs = 0
@@ -40,9 +48,7 @@ for train_index, test_index in sss.split(X, thruthMean):
     # X_train = std_scale.transform(X_train)
     # X_test = std_scale.transform(X_test)
 
-    clf = XGBRegressor(criterion='mse', learning_rate=0.342797576724562, max_depth=23, n_estimators=21)
-    # clf = GradientBoostingRegressor(criterion='mse', learning_rate=0.199816047538945, max_depth=31, n_estimators=17)
-    # clf = XGBRegressor()
+    clf = Ridge(alpha=0.1)
     clf.fit(X_train, thruthMean_train)
     thruthMean_pred = clf.predict(X_test)
 
