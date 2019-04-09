@@ -105,19 +105,19 @@ print(len(feat_dict.keys()))
 
 selected = ()
 selected_feat_dict = {}
-for ind, feature in enumerate([x for x in list(voting.items()) if x[1] <= statistics.stdev(voting.values())]):
+for ind, feature in enumerate([x for x in list(voting.items()) if x[1] <= 1.5*statistics.stdev(voting.values())]):
     selected += (X[:, int(feat_dict[feature[0]])],)
     selected_feat_dict[ind] = feature[0]
 final_X = np.column_stack(selected)
 print(final_X.shape[0], final_X.shape[1])
 
-f = open(r"selected_with_pos.pkl", "wb")
+f = open(r"selected_training.pkl", "wb")
 pickle.dump(final_X, f)
 pickle.dump(y_class, f)
 pickle.dump(y_reg, f)
 f.close()
 
-with open('selected_features_labels_with_pos.json', 'w') as fp:
+with open('selected_features_labels_training.json', 'w') as fp:
     json.dump(selected_feat_dict, fp)
 
 # # info gain ranking and values

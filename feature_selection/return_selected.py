@@ -8,7 +8,7 @@ X, y_class, y_reg = get_features_and_labels()
 with open('../data_reading/features_labels_big.json') as json_file:
     feat_names = json.load(json_file)
 
-with open('selected_79/selected_features_labels_with_pos.json') as json_file:
+with open('selected_81/selected_features_labels_training.json') as json_file:
     feat_selected = json.load(json_file)
 
 feat_dict = {}
@@ -30,8 +30,8 @@ for key in feat_dict_sel.keys():
 final_X = np.column_stack(selected)
 print(final_X.shape[0], final_X.shape[1])
 
-# f = open(r"selected_big.pkl", "wb")
-# pickle.dump(final_X, f)
-# pickle.dump(y_class, f)
-# pickle.dump(y_reg, f)
-# f.close()
+f = open(r"selected_big.pkl", "wb")
+pickle.dump(final_X, f)
+pickle.dump(y_class, f)
+pickle.dump(y_reg, f)
+f.close()
