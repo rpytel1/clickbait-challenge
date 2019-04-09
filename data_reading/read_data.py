@@ -53,6 +53,15 @@ def read_data(filename):
 # pickle.dump(removed_link_data, f)
 # f.close()
 
+# print('Stopword Removal on ngrams')
+# ngram_without_stopwords = preprocess_data.remove_stop_words(deepcopy(ngram_data))
+
+# f = open(r"preprocessed_ngrams_big_corpus.pkl", "wb")
+# pickle.dump(data, f)
+# pickle.dump(ngram_data, f)
+# pickle.dump(ngram_without_stopwords, f)
+# f.close()
+
 print('Opening preprocessed data...')
 f = open("preprocessed_big_corpus.pkl", "rb") # put in here the file to load for extraction
 data = pickle.load(f)
@@ -65,7 +74,17 @@ ngram_data = pickle.load(f)
 removed_link_data = pickle.load(f)
 f.close()
 
+f = open("preprocessed_ngrams_big_corpus.pkl", "rb")
+_ = pickle.load(f)
+_ = pickle.load(f)
+ngram_without_stopwords = pickle.load(f)
+f.close()
+
+
+
+
+
 
 print('Extracting Features...')
 extract_features(no_html_data, num_link_replaced_data, stemmed_no_link_data,
-                 num_link_removed_data, all_in_data, ngram_data, removed_link_data)
+                 num_link_removed_data, all_in_data, ngram_without_stopwords, removed_link_data)

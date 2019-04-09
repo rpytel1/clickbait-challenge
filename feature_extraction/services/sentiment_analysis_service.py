@@ -6,7 +6,7 @@ import numpy as np
 from stanfordcorenlp import StanfordCoreNLP
 import json
 
-nlp = StanfordCoreNLP('http://localhost', port=9000, timeout=30000)  # , quiet=False, logging_level=logging.DEBUG)
+nlp = StanfordCoreNLP('http://localhost', port=9000, timeout=500000)  # , quiet=False, logging_level=logging.DEBUG)
 props = {
     'annotators': 'sentiment',
     'pipelineLanguage': 'en',
@@ -65,10 +65,12 @@ def extract_length_of_syntactic_distance(s):
     dist_list = [0]
     for elem in s["basicDependencies"]:
         if elem["dep"] not in ['ROOT','punct']: #We take into account only into the words
-            governor_gloss_id = words.index(elem["governorGloss"])
-            dependent_gloss_id = words.index(elem["dependentGloss"])
-            dist_list.append(abs(governor_gloss_id - dependent_gloss_id))
-
+            try:
+                governor_gloss_id = words.index(elem["governorGloss"])
+                dependent_gloss_id = words.index(elem["dependentGloss"])
+                dist_list.append(abs(governor_gloss_id - dependent_gloss_id))
+            except KeyError:
+                dist_list.append(-1)
     return max(dist_list)
 
 

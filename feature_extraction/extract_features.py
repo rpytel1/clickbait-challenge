@@ -59,7 +59,8 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             feat_names.extend(add_slang_features(model, removed))
             feat_names.extend(add_readability_features(model, no_link))
             add_ngrams(model, ngramish, final_ngrams) # !!!!! remove ngram part from extraction all except Rafail
-            feat_names.extend([k for i in final_ngrams for k in i]) # !!!!! remove ngram part from extraction all except Rafail
+            fields = ['postText', 'targetTitle', 'targetDescription', 'targetParagraphs']*4
+            feat_names.extend([fields[ind] + ": " + str(k) for ind,fn in enumerate(final_ngrams) for k in fn]) # !!!!! remove ngram part from extraction all except Rafail
             # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
             # feat_names.extend([k for i in final_pos_ngrams for k in i])
 
