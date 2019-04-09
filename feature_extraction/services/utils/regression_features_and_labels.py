@@ -7,7 +7,7 @@ import pandas as pd
 
 def get_features_and_labels():
 
-    filename = "../../data_reading/data.obj"
+    filename = r"../data_reading/data_big.obj"
     with open(filename, 'rb') as json_file:
         data = pickle.load(json_file)
 
@@ -17,12 +17,15 @@ def get_features_and_labels():
         for ind, feature in enumerate(post.features):
             post_dict[post.id][ind] = feature
 
-    truth_file = '../../data/clickbait-training/truth.jsonl'
+    truth_file = r'../data/clickbait17-validation-170630/truth.jsonl'
     with open(truth_file, encoding="utf-8") as f:
         for ind, line in enumerate(f):
             post = json.loads(line)
-            post_dict[post["id"]]["truthMean"] = post["truthMean"]
-            post_dict[post["id"]]["truthClass"] = post["truthClass"]
+            if post["id"] in post_dict.keys():
+                post_dict[post["id"]]["truthMean"] = post["truthMean"]
+                post_dict[post["id"]]["truthClass"] = post["truthClass"]
+            else:
+                print('Didn\'t find ', post["id"])
 
     index = post_dict.keys()
     features = pd.DataFrame.from_dict(post_dict, orient='index', dtype=None)
