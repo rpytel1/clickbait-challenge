@@ -9,7 +9,7 @@ from feature_extraction.services.utils.regression_features_and_labels import get
 
 def rf_randomized_search(X, y):
     mse_scorer = make_scorer(mean_squared_error)
-    sss = StratifiedShuffleSplit(n_splits=3, random_state=42)
+    # sss = StratifiedShuffleSplit(n_splits=3, random_state=42)
 
     # scaler = StandardScaler().fit(X)
     # X = scaler.transform(X)
@@ -25,7 +25,7 @@ def rf_randomized_search(X, y):
     random_search = RandomizedSearchCV(AdaBoostRegressor(), param_distributions=param_dist,
                                        n_iter=n_iter_search,
                                        scoring={'mse': mse_scorer},
-                                       cv=sss, refit='mse', verbose=2, random_state=42, n_jobs=4)
+                                       cv=3, refit='mse', verbose=2, random_state=42, n_jobs=4)
 
     random_search.fit(X, y)
     print(random_search.best_params_)
@@ -33,7 +33,7 @@ def rf_randomized_search(X, y):
 
 if __name__ == "__main__":
     # X, _, truthMean = get_features_and_labels()
-    with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
+    with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
         X = pickle.load(f)
         truthClass = pickle.load(f)
         truthMean = pickle.load(f)

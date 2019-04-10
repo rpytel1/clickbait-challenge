@@ -15,12 +15,12 @@ def normalized_mean_squared_error(truth, predictions):
     return skm.mean_squared_error(truth, predictions) / norm
 
 
-X, truthClass, thruthMean = get_features_and_labels()
-#
-# with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
-#     X = pickle.load(f)
-#     truthClass = pickle.load(f)
-#     thruthMean = pickle.load(f)
+# X, truthClass, thruthMean = get_features_and_labels()
+
+with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
+    X = pickle.load(f)
+    truthClass = pickle.load(f)
+    thruthMean = pickle.load(f)
 
 sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
@@ -39,7 +39,7 @@ precision = 0
 recall = 0
 f1 = 0
 
-for train_index, test_index in sss.split(X, thruthMean):
+for train_index, test_index in sss.split(X, truthClass):
     X_train, X_test = X[train_index], X[test_index]
     thruthMean_train, thruthMean_test = thruthMean[train_index], thruthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]

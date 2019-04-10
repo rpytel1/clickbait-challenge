@@ -15,12 +15,13 @@ def normalized_mean_squared_error(truth, predictions):
     return skm.mean_squared_error(truth, predictions) / norm
 
 
-# X, truthClass, thruthMean = get_features_and_labels()
-#
-with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
-    X = pickle.load(f)
-    truthClass = pickle.load(f)
-    thruthMean = pickle.load(f)
+X, truthClass, thruthMean = get_features_and_labels()
+
+# with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
+#     X = pickle.load(f)
+#     truthClass = pickle.load(f)
+#     thruthMean = pickle.load(f)
+
 sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
 # initialize regression evaluation metrics
@@ -39,7 +40,7 @@ recall = 0
 f1 = 0
 # f_scores = []
 
-for train_index, test_index in sss.split(X, thruthMean):
+for train_index, test_index in sss.split(X, truthClass):
     X_train, X_test = X[train_index], X[test_index]
     thruthMean_train, thruthMean_test = thruthMean[train_index], thruthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]
@@ -51,7 +52,8 @@ for train_index, test_index in sss.split(X, thruthMean):
     # clf = RandomForestRegressor(n_estimators=230, min_samples_split=2, min_samples_leaf=2, max_features='auto',
     #                             max_depth=60, bootstrap=False, n_jobs=-1)
 
-    clf = RandomForestRegressor(n_jobs=-1)
+    # clf = RandomForestRegressor(n_estimators=10, min_samples_split=2, min_samples_leaf=1, n_jobs=-1)
+    clf = RandomForestRegressor(n_jobs=-1,random_state=42)
 
     clf.fit(X_train, thruthMean_train)
     thruthMean_pred = clf.predict(X_test)

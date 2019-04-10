@@ -16,15 +16,15 @@ def normalized_mean_squared_error(truth, predictions):
     return skm.mean_squared_error(truth, predictions) / norm
 
 
-# X, truthClass, truthMean = get_features_and_labels()
+X, truthClass, truthMean = get_features_and_labels()
 
-with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
-    X = pickle.load(f)
-    truthClass = pickle.load(f)
-    truthMean = pickle.load(f)
+# with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
+#     X = pickle.load(f)
+#     truthClass = pickle.load(f)
+#     truthMean = pickle.load(f)
 
 
-sss = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
+sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
 # initialize regression evaluation metrics
 evs = 0
@@ -41,7 +41,7 @@ precision = 0
 recall = 0
 f1 = 0
 
-for train_index, test_index in sss.split(X, truthMean):
+for train_index, test_index in sss.split(X, truthClass):
     X_train, X_test = X[train_index], X[test_index]
     truthMean_train, truthMean_test = truthMean[train_index], truthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]
@@ -50,7 +50,8 @@ for train_index, test_index in sss.split(X, truthMean):
     # X_train = std_scale.transform(X_train)
     # X_test = std_scale.transform(X_test)
 
-    clf = AdaBoostRegressor(n_estimators=10, loss='linear', learning_rate=0.01)
+    # clf = AdaBoostRegressor(n_estimators=10, loss='linear', learning_rate=0.05) # for all features
+    clf = AdaBoostRegressor(n_estimators=10, loss='linear', learning_rate=0.01, random_state=42)# for selected features
     clf.fit(X_train, truthMean_train)
     truthMean_pred = clf.predict(X_test)
 

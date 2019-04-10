@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_sc
     explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
 from sklearn import svm
 from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import StratifiedShuffleSplit
+from sklearn.model_selection import StratifiedShuffleSplit, StratifiedKFold
 
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
@@ -16,12 +16,12 @@ def normalized_mean_squared_error(truth, predictions):
     return skm.mean_squared_error(truth, predictions) / norm
 
 
-X, truthClass, truthMean = get_features_and_labels()
-#
-# with open("../../feature_selection/selected_79/selected_with_pos.pkl", "rb") as f:
-#     X = pickle.load(f)
-#     truthClass = pickle.load(f)
-#     truthMean = pickle.load(f)
+# X, truthClass, truthMean = get_features_and_labels()
+
+with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
+    X = pickle.load(f)
+    truthClass = pickle.load(f)
+    truthMean = pickle.load(f)
 
 sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
 
@@ -40,7 +40,7 @@ precision = 0
 recall = 0
 f1 = 0
 
-for train_index, test_index in sss.split(X, truthMean):
+for train_index, test_index in sss.split(X, truthClass):
     X_train, X_test = X[train_index], X[test_index]
     truthMean_train, truthMean_test = truthMean[train_index], truthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]
@@ -49,7 +49,9 @@ for train_index, test_index in sss.split(X, truthMean):
     X_train = std_scale.transform(X_train)
     X_test = std_scale.transform(X_test)
 
-    clf = svm.SVR(kernel='linear', C=0.015848931924611134)
+    clf = svm.SVR(kernel='linear', C=0.2, epsilon=0.2) #for 81 features
+    clf = svm.SVR(kernel='linear', C=0.1, epsilon=0.1) #for all features
+    # clf = svm.SVR(kernel='linear', C=0.015848931924611134)
     # clf = svm.SVR(kernel='linear', C=0.1024942976460832) without selection
     clf.fit(X_train, truthMean_train)
     truthMean_pred = clf.predict(X_test)
