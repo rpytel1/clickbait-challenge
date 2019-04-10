@@ -1,7 +1,7 @@
 import datetime
 import numpy as np
 
-
+# function calculating all time related features like hours since UNIX, weekday and hour of creating
 def calculate_time_features(entry):
     dt = datetime.datetime.strptime(entry["postTimestamp"], '%a %b %d %H:%M:%S %z %Y')
     hours = int(np.floor(dt.timestamp() / 3600))

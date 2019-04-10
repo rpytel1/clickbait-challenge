@@ -1,12 +1,9 @@
-import pickle
-
 import sklearn.metrics as skm
 import numpy as np
 from sklearn.ensemble import AdaBoostRegressor
-from sklearn.linear_model import LinearRegression
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, \
     explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
-from sklearn.model_selection import StratifiedShuffleSplit, StratifiedKFold
+from sklearn.model_selection import StratifiedKFold
 
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
@@ -17,11 +14,6 @@ def normalized_mean_squared_error(truth, predictions):
 
 
 X, truthClass, truthMean = get_features_and_labels()
-
-# with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
-#     X = pickle.load(f)
-#     truthClass = pickle.load(f)
-#     truthMean = pickle.load(f)
 
 
 sss = StratifiedKFold(n_splits=10, shuffle=True, random_state=42)
@@ -45,10 +37,6 @@ for train_index, test_index in sss.split(X, truthClass):
     X_train, X_test = X[train_index], X[test_index]
     truthMean_train, truthMean_test = truthMean[train_index], truthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]
-
-    # std_scale = StandardScaler().fit(X_train)
-    # X_train = std_scale.transform(X_train)
-    # X_test = std_scale.transform(X_test)
 
     # clf = AdaBoostRegressor(n_estimators=10, loss='linear', learning_rate=0.05) # for all features
     clf = AdaBoostRegressor(n_estimators=10, loss='linear', learning_rate=0.01, random_state=42)# for selected features

@@ -17,11 +17,11 @@ tagger_pos = StanfordPOSTagger(model_pos_tag, path_to_jar=jar_pos_tag, encoding=
 
 tagger_en = StanfordNERTagger(model_en_tag, path_to_jar=jar_en_tag, encoding='UTF-8')
 
-
+# preprocessing helper function to obtain string without html tags
 def html_and_remove(entry):
     return re.sub(r'<.*?>', '', html.unescape(entry))
 
-
+# aggregate function removing all html tags from data
 def remove_html_tags(data):
     for count, entry in enumerate(data):
         print(count)
@@ -35,7 +35,7 @@ def remove_html_tags(data):
             entry['targetCaptions'][ind] = html_and_remove(entry['targetCaptions'][ind])
     return data
 
-
+# preprocessing helper function removing stopwords from string
 def check_and_remove(tokenizer, entry, stopword_dict):
     words = tokenizer.tokenize(entry)
     for word in words:
@@ -43,7 +43,7 @@ def check_and_remove(tokenizer, entry, stopword_dict):
             entry = re.sub(r'\b'+word+r'\b', '', entry)
     return entry
 
-
+# aggregate function removing all stop words from data
 def remove_stop_words(data):
     tokenizer = nltk.RegexpTokenizer(r'\w+')
     stopword_dict = {w: 1 for w in stopwords.words('english')}
@@ -59,14 +59,14 @@ def remove_stop_words(data):
             entry['targetCaptions'][ind] = check_and_remove(tokenizer, entry['targetCaptions'][ind], stopword_dict)
     return data
 
-
+# preprocessing helper funciton removing numbers
 def check_and_replace(tokenizer, entry):
     numbers = tokenizer.tokenize(entry)
     for num in numbers:
         entry = re.sub(r'\b' + num + r'\b', '[n]', entry)
     return entry
 
-
+# aggregate function replacing all numbers in data to "num" keyword
 def replace_numbers(data):
     tokenizer = nltk.RegexpTokenizer(r'\b[-+]?\d+\.\d+\b|\b\d+\b')
     for count, entry in enumerate(data):
@@ -81,7 +81,7 @@ def replace_numbers(data):
             entry['targetCaptions'][ind] = check_and_replace(tokenizer, entry['targetCaptions'][ind])
     return data
 
-
+# preprocessing helper function removing numbers
 def num_and_remove(tokenizer, entry):
     words = tokenizer.tokenize(entry)
     to_be_removed = [w for w in words if w.isalnum() and not w.isdigit() and not w.isalpha()]
@@ -89,7 +89,7 @@ def num_and_remove(tokenizer, entry):
         entry = entry.replace(w, re.sub(r'\d+', '', w))
     return entry
 
-
+# aggregate function removing numbers from data
 def remove_numbers(data):
     tokenizer = nltk.RegexpTokenizer(r'\w+')
     for count, entry in enumerate(data):
@@ -104,14 +104,14 @@ def remove_numbers(data):
             entry['targetCaptions'][ind] = num_and_remove(tokenizer, entry['targetCaptions'][ind])
     return data
 
-
+# helper function performing stemming
 def stem_and_replace(tokenizer, stemmer, entry):
     words = tokenizer.tokenize(entry)
     for word in words:
         entry = entry.replace(word, stemmer.stem(word.lower()))
     return entry
 
-
+# aggreagate function performing Porter stemming
 def apply_stemming(data):
     tokenizer = nltk.RegexpTokenizer(r'\w+|[\[\w\]]+')
     ps = PorterStemmer()
@@ -127,14 +127,14 @@ def apply_stemming(data):
             entry['targetCaptions'][ind] = stem_and_replace(tokenizer, ps, entry['targetCaptions'][ind])
     return data
 
-
+# helper function replacing links with [url] keyword
 def link_and_replace(tokenizer, entry):
     links = tokenizer.tokenize(entry)
     for link in links:
         entry = entry.replace(link, '[url]')
     return entry
 
-
+# aggregate function replacing urls in all data
 def find_links(data):
     tokenizer = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
     for count, entry in enumerate(data):
@@ -149,14 +149,14 @@ def find_links(data):
             entry['targetCaptions'][ind] = link_and_replace(tokenizer, entry['targetCaptions'][ind])
     return data
 
-
+# helper function removing links
 def link_and_remove(tokenizer, entry):
     links = tokenizer.tokenize(entry)
     for link in links:
         entry = entry.replace(link, '')
     return entry
 
-
+# aggregate function removing all links from the data
 def remove_links(data):
     tokenizer = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
     for count, entry in enumerate(data):
@@ -173,23 +173,9 @@ def remove_links(data):
 
 
 def apply_lower(data):
-    # text = data["targetTitle"]
     text = data
     tokenizer = nltk.RegexpTokenizer('\w+')
     entities = tokenizer.tokenize(text)
-
-    # # nltk entity recognizer
-    # tagged_text = pos_tag(entities)
-    # tagged_text_chunk = ne_chunk(tagged_text)
-    # entities = []
-    # for i in tagged_text_chunk:
-    #     if type(i) == Tree:
-    #         for j in range(len(i)):
-    #             entities.append(i[j][0])
-    #     else:
-    #         entities.append(i[0].lower())
-
-    # # Stanford entity recognizer
 
     tagged_text_pos = tagger_pos.tag(entities)
     tagged_text_en = tagger_en.tag(entities)
@@ -202,8 +188,6 @@ def apply_lower(data):
         else:
             entities_en.append(tagged_text_pos[j][0].lower())
         j += 1
-
-    # print(entities_en)
 
     return entities_en
 

@@ -3,7 +3,7 @@ from collections import Counter
 
 WORD = re.compile(r'\w+')
 
-
+# function calculating cosine given two vectors
 def get_cosine(vec1, vec2):
     intersection = set(vec1.keys()) & set(vec2.keys())
     numerator = sum([vec1[x] * vec2[x] for x in intersection])
@@ -17,12 +17,12 @@ def get_cosine(vec1, vec2):
     else:
         return float(numerator) / denominator
 
-
+# function changing text into vector format
 def text_to_vector(text):
     words = WORD.findall(text)
     return Counter(words)
 
-
+# aggregate funciton calculating cosine similiarity between all the parts of the article + post
 def calculate_cosine_similiarity(entry):
     vector_post_title = text_to_vector(entry["postText"][0])
     vector_article_title = text_to_vector(entry["targetTitle"])

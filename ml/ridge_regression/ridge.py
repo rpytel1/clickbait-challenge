@@ -5,18 +5,14 @@ import numpy as np
 from sklearn.linear_model import  Ridge
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, \
     explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
-from sklearn.model_selection import StratifiedShuffleSplit, StratifiedKFold
+from sklearn.model_selection import StratifiedKFold
 
-from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
 
 def normalized_mean_squared_error(truth, predictions):
     norm = skm.mean_squared_error(truth, np.full(len(truth), np.mean(truth)))
     return skm.mean_squared_error(truth, predictions) / norm
 
-
-# X, truthClass, thruthMean = get_features_and_labels()
-#
 with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
     X = pickle.load(f)
     truthClass = pickle.load(f)
@@ -44,9 +40,6 @@ for train_index, test_index in sss.split(X, truthClass):
     thruthMean_train, thruthMean_test = thruthMean[train_index], thruthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]
 
-    # std_scale = StandardScaler().fit(X_train)
-    # X_train = std_scale.transform(X_train)
-    # X_test = std_scale.transform(X_test)
 
     clf = Ridge(alpha=0.1)
     clf.fit(X_train, thruthMean_train)

@@ -36,13 +36,8 @@ for train_index, test_index in sss.split(X, thruthMean):
     thruthMean_train, thruthMean_test = thruthMean[train_index], thruthMean[test_index]
     truthClass_train, truthClass_test = truthClass[train_index], truthClass[test_index]
 
-    # std_scale = StandardScaler().fit(X_train)
-    # X_train = std_scale.transform(X_train)
-    # X_test = std_scale.transform(X_test)
-
     clf = XGBRegressor(criterion='mse', learning_rate=0.342797576724562, max_depth=23, n_estimators=21)
-    # clf = GradientBoostingRegressor(criterion='mse', learning_rate=0.199816047538945, max_depth=31, n_estimators=17)
-    # clf = XGBRegressor()
+
     clf.fit(X_train, thruthMean_train)
     thruthMean_pred = clf.predict(X_test)
 

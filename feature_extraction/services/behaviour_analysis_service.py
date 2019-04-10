@@ -127,7 +127,7 @@ cList = [
   "you've"
 ]
 
-
+# function calculating all behaviour features
 def calculate_all_behaviour_features(entry):
     behaviour_post_title = calculate_special_signs(entry["postText"][0])
     behaviour_post_image = calculate_special_signs(get_text_from_image(entry))
@@ -178,11 +178,10 @@ def get_feat_names():
            behaviour_article_paragraphs_feats + ['post_title_starts_num', 'article_title_starts_num',
             'post_title_starts_5w1h', 'article_title_starts_5w1h']
 
-
+# function calculating no of occurrences of @ ! # and ? and links, avg word length and fraction of stopwords
 def calculate_special_signs(text):
-    # Calculate no of occurrences of @ ! # and ? and links, avg word length and fraction of stopwords
     tokenizer1 = nltk.RegexpTokenizer(r'https?://(?:[-\w./.]|(?:%[\da-fA-F]{2}))+')
-    tokenizer2 = nltk.RegexpTokenizer(r'\w+')  # TODO: check the appropriateness of such regexp
+    tokenizer2 = nltk.RegexpTokenizer(r'\w+')
     no_links = link_and_remove(tokenizer1, text)
     return [text.count("@"), text.count("!"), text.count("#"), text.count("?"), text.count("*"),
             len(tokenizer1.tokenize(text)),
@@ -195,10 +194,10 @@ def calculate_special_signs(text):
 def check_num(text):
     return 0 if not re.search(r'^\s*\d+', text) else 1
 
-
+# function checking if text contains any 5w1h question keywords
 def check_5w1h(text):
     return 0 if not re.search(r'^\s*(?:who|why|what|when|where|how)', text.lower()) else 1
 
-
+# funciton checking contradictions
 def check_contractions(text):
     return sum(text.lower().count(c) for c in cList)

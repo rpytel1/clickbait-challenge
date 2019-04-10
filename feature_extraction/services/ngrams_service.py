@@ -3,7 +3,7 @@ import numpy as np
 from nltk import ngrams, FreqDist, RegexpTokenizer
 from nltk.corpus import stopwords
 
-
+# function extracting unigrams from the entry
 def extract_unigrams(text_ngrams):
     unigrams = list(ngrams(text_ngrams, 1))
     stop_words = set(stopwords.words('english'))
@@ -13,7 +13,7 @@ def extract_unigrams(text_ngrams):
     unigrams_freq = [(" ".join(w), f) for w, f in unigrams_dist]
     return dict(unigrams_freq)
 
-
+# function extracting bigrams from the entry
 def extract_bigrams(text_ngrams):
     bigrams = list(ngrams(text_ngrams, 2))
     bigrams_len = len(bigrams)
@@ -21,7 +21,7 @@ def extract_bigrams(text_ngrams):
     bigrams_freq = [(" ".join(w), f) for w, f in bigrams_dist]
     return dict(bigrams_freq)
 
-
+# function extracting trigrams from the entry
 def extract_trigrams(text_ngrams):
     trigrams = list(ngrams(text_ngrams, 3))
     trigrams_len = len(trigrams)
@@ -29,7 +29,7 @@ def extract_trigrams(text_ngrams):
     trigrams_freq = [(" ".join(w), f) for w, f in trigrams_dist]
     return dict(trigrams_freq)
 
-
+# function extracting fourgrams from the entry
 def extract_fourgrams(text_ngrams):
     fourgrams = list(ngrams(text_ngrams, 4))
     fourgrams_len = len(fourgrams)
@@ -37,13 +37,11 @@ def extract_fourgrams(text_ngrams):
     fourgrams_freq = [(" ".join(w), f) for w, f in fourgrams_dist]
     return dict(fourgrams_freq)
 
-
+# function extracting ngrams from the text
 def extract_ngrams(text):
     # preprocess text
     text = text.lower().replace('\n', " ")
     text = text.translate(str.maketrans('', '', string.punctuation))
-    # text = re.sub('[^a-zA-Z0-9 \n\.]', '[_]', text)
-    # text = re.sub('[-+]?\d*\.\d+|\d+', '[n]', text)
 
     # word tokens
     tokenizer = RegexpTokenizer(r'\w+|[\[\w\]]+')
@@ -63,7 +61,7 @@ def extract_ngrams(text):
 
     return unigrams, bigrams, trigrams, fourgrams
 
-
+# aggregate function extracting all ngrams from each parts of the article+post
 def calculate_all_ngrams(entry):
     postText_unigrams, postText_bigrams, postText_trigrams, postText_fourgrams = extract_ngrams(
         entry["postText"][0])
@@ -81,9 +79,8 @@ def calculate_all_ngrams(entry):
            targetDescription_unigrams, targetDescription_bigrams, targetDescription_trigrams, targetDescription_fourgrams, \
            targetParagraphs_unigrams, targetParagraphs_bigrams, targetParagraphs_trigrams, targetParagraphs_fourgrams
 
-
+# function finding all possible ngrams
 def find_final_ngrams(data):
-    # data = read_data('../../data/clickbait-training/instances.jsonl')
     possible_ngrams = [{} for _ in range(20)]
     for doc_id, entry in enumerate(data):
         all_ngrams = calculate_all_ngrams(entry)
@@ -113,7 +110,7 @@ def find_final_ngrams(data):
         del possible_ngrams[tup[0]][tup[1]]
     return possible_ngrams
 
-
+# function returning all possible ngrams
 def get_all_ngrams(entry, final_ngrams):
     final_features = []
     all_ngrams = list(calculate_all_ngrams(entry))

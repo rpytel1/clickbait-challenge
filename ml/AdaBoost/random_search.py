@@ -1,18 +1,12 @@
 import pickle
 
 from sklearn.ensemble import AdaBoostRegressor
-from sklearn.linear_model import LinearRegression
 from sklearn.metrics import make_scorer, mean_squared_error
 from sklearn.model_selection import RandomizedSearchCV, StratifiedShuffleSplit
-from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
 
 
 def rf_randomized_search(X, y):
     mse_scorer = make_scorer(mean_squared_error)
-    # sss = StratifiedShuffleSplit(n_splits=3, random_state=42)
-
-    # scaler = StandardScaler().fit(X)
-    # X = scaler.transform(X)
 
     # Create the random grid
     param_dist = {
@@ -32,7 +26,6 @@ def rf_randomized_search(X, y):
 
 
 if __name__ == "__main__":
-    # X, _, truthMean = get_features_and_labels()
     with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
         X = pickle.load(f)
         truthClass = pickle.load(f)

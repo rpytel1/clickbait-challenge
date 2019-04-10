@@ -3,9 +3,8 @@ from feature_extraction.services.image_service import get_text_from_image
 
 tokenizer = RegexpTokenizer(r'\w+')
 
-
+# function calculating no of words which overlap between set of keywords and words of certain part
 def calculate_common_words_features(entry):
-    # no of words which overlap between set of keywords and words of certain part
     keywords = get_unique_set_from_text(entry["targetKeywords"])
 
     post_title = get_unique_set_from_text(entry["postText"][0])

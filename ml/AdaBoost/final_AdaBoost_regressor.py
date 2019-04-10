@@ -4,7 +4,6 @@ import numpy as np
 from sklearn.ensemble import AdaBoostRegressor
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, \
     explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
-from feature_extraction.services.utils.final_regression_features_and_labels import get_features_and_labels
 from ml.utils.help_functions import compute_diffs, plot_confusion_matrix
 
 
@@ -12,9 +11,6 @@ def normalized_mean_squared_error(truth, predictions):
     norm = skm.mean_squared_error(truth, np.full(len(truth), np.mean(truth)))
     return skm.mean_squared_error(truth, predictions) / norm
 
-
-# X_train, truthClass_train, truthMean_train = get_features_and_labels(case='train')
-# X_test, truthClass_test, truthMean_test = get_features_and_labels(case='test')
 
 with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
     X_train = pickle.load(f)
@@ -25,10 +21,6 @@ with open("../../feature_selection/selected_81/selected_big.pkl", "rb") as f:
     X_test = pickle.load(f)
     truthClass_test = pickle.load(f)
     truthMean_test = pickle.load(f)
-
-# std_scale = StandardScaler().fit(X_train)
-# X_train = std_scale.transform(X_train)
-# X_test = std_scale.transform(X_test)
 
 clf = AdaBoostRegressor(n_estimators=10, loss='linear', learning_rate=0.01, random_state=42)
 clf.fit(X_train, truthMean_train)

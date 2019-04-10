@@ -11,6 +11,7 @@ class WordService:
         self.matrix_list = []
         self.feat_list = []
 
+    # function calculating all linguistic features
     def calculate_all_linguistic_features(self, entry):
         # Initialization
         self.image_text = get_text_from_image(entry)
@@ -22,9 +23,11 @@ class WordService:
         diffs = self.calculate_diff_features()
         return flatten_list_of_lists([all_ling, ratios, diffs])
 
+    # function returning num of words and num of characters for all parts of article and post
     def calculate_linguistic_features(self):
         return unwrap_from_np_array(self.matrix_list)
 
+    # function calculating all possible differences in both characters and words between all parts of article and post
     def calculate_diff_features(self):
         # Triangular difference for all parts
         diffs = []
@@ -35,6 +38,7 @@ class WordService:
                 diffs.append(list(map(abs, list(self.matrix_list[i] - self.matrix_list[j]))))
         return flatten_list_of_lists(diffs)
 
+    # function calculating all possible ratios in both characters and words between all parts of article and post
     def calculate_ratios(self):
         # Triangular ratios between all parts
 
@@ -49,6 +53,7 @@ class WordService:
                 diffs.append(ratio)
         return flatten_list_of_lists(diffs)
 
+    # function creating matrices containing num of characters and num of words per each part of the article + post
     def create_matrices(self, entry):
         # create list of matrices containing number of chars and num of words per each part
 
@@ -95,7 +100,7 @@ class WordService:
 
     @staticmethod
     def calculate_basic_linguistic_features(text):
-        tokenizer = nltk.RegexpTokenizer(r'\w+')  # TODO: maybe the regexp to be considered better
+        tokenizer = nltk.RegexpTokenizer(r'\w+')
         words = tokenizer.tokenize(text)
         chars = "".join(words)
         len_words = 0 if not len(words) else len(words)

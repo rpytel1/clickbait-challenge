@@ -1,6 +1,6 @@
 import textstat
 
-
+# aggregate function extracting all readability features using flesh kincad grade
 def get_readability(entry):
     readability_post_title = textstat.flesch_kincaid_grade(entry["postText"][0])
     readability_article_title = textstat.flesch_kincaid_grade(entry["targetTitle"])

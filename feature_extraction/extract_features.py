@@ -16,18 +16,13 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
     model_lists = []
     feat_names = []
     i = 0
-    final_ngrams = find_final_ngrams(ngram_data) # !!!!! remove ngram part from extraction all except Rafail
+    final_ngrams = find_final_ngrams(ngram_data)
 
-    # POS_data = dependecies_service.create_POS_data(num_link_removed_data)
-    # final_pos_ngrams = find_final_ngrams(num_link_removed_data)
     for raw, replaced, stemmed, removed, all_in, ngramish, no_link in \
             zip(data, num_link_replaced_data, stemmed_no_link_data, num_link_removed_data, all_in_data, ngram_data, removed_link_data):
         print(i)
-        if not raw["id"] == replaced["id"] == stemmed["id"] == removed["id"] == all_in["id"] == ngramish["id"] == no_link["id"]:
-            print('-------------- Malakia --------------')
-            break
+
         model = Model(index=raw["id"])
-        # POS_entry = dependecies_service.create_POS_entry(removed)
         if i != 0:
             add_image_related_features(model, raw)
             add_linguistic_analysis_features(model, replaced)
@@ -42,8 +37,7 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             add_pattern_pos(model, removed)
             add_slang_features(model, raw)
             add_readability_features(model, no_link)
-            add_ngrams(model, ngramish, final_ngrams) # !!!!! remove ngram part from extraction all except Rafail
-            # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
+            add_ngrams(model, ngramish, final_ngrams)
         else:
             feat_names.extend(add_image_related_features(model, raw))
             feat_names.extend(add_linguistic_analysis_features(model, replaced))
@@ -58,11 +52,9 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
             feat_names.append(add_pattern_pos(model, removed))
             feat_names.extend(add_slang_features(model, removed))
             feat_names.extend(add_readability_features(model, no_link))
-            add_ngrams(model, ngramish, final_ngrams) # !!!!! remove ngram part from extraction all except Rafail
+            add_ngrams(model, ngramish, final_ngrams)
             fields = ['postText', 'targetTitle', 'targetDescription', 'targetParagraphs']*4
-            feat_names.extend([fields[ind] + ": " + str(k) for ind,fn in enumerate(final_ngrams) for k in fn]) # !!!!! remove ngram part from extraction all except Rafail
-            # add_POS_ngrams(model, POS_entry, final_pos_ngrams)
-            # feat_names.extend([k for i in final_pos_ngrams for k in i])
+            feat_names.extend([fields[ind] + ": " + str(k) for ind,fn in enumerate(final_ngrams) for k in fn])
 
             print(len(feat_names))
             feat_dict = {}
@@ -76,7 +68,6 @@ def extract_features(data, num_link_replaced_data, stemmed_no_link_data,
 
 
 def add_image_related_features(model, entry):
-    # has multimedia + what text on multimedia
     model.features.extend(image_service.calculate_image_features(entry))
     return image_service.get_feat_names()
 

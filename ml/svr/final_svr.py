@@ -5,7 +5,6 @@ from sklearn import svm
 from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, confusion_matrix, \
     explained_variance_score, mean_squared_error, r2_score, mean_absolute_error, median_absolute_error, roc_auc_score
 from sklearn.preprocessing import StandardScaler
-from feature_extraction.services.utils.final_regression_features_and_labels import get_features_and_labels
 from ml.utils.help_functions import compute_diffs, plot_confusion_matrix
 
 
@@ -13,9 +12,6 @@ def normalized_mean_squared_error(truth, predictions):
     norm = skm.mean_squared_error(truth, np.full(len(truth), np.mean(truth)))
     return skm.mean_squared_error(truth, predictions) / norm
 
-
-# X_train, truthClass_train, truthMean_train = get_features_and_labels(case='train')
-# X_test, truthClass_test, truthMean_test = get_features_and_labels(case='test')
 
 with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
     X_train = pickle.load(f)

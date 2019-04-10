@@ -128,10 +128,3 @@ def expandContractions(text):
     def replace(match):
         return cList[match.group(0)]
     return c_re.sub(replace, text)
-
-# # examples
-# print(expandContractions("don't you get it?"))
-# print(expandContractions("I ain't got time for y'alls foolishness"))
-# print(expandContractions("You won't live to see tomorrow."))
-# print(expandContractions("you've got serious cojones coming in here like that."))
-# print(expandContractions("I hadn't've enough"))

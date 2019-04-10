@@ -8,7 +8,7 @@ import pytesseract
 BASIC_PATH = "../data/clickbait-training/"
 # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
 
-
+# method calculating 2 image related features: if post has image and if image contains text
 def calculate_image_features(entry):
     has_image = 0
     text_image = 0
@@ -24,7 +24,7 @@ def calculate_image_features(entry):
 def get_feat_names():
     return 'has image', 'text in image'
 
-
+# helper function to extract text from the image
 def get_text_from_image(entry):
     text = ""
     for img in entry["postMedia"]:

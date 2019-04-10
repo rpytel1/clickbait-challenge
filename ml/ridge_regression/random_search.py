@@ -7,10 +7,6 @@ from feature_extraction.services.utils.regression_features_and_labels import get
 
 def rf_randomized_search(X, y):
     mse_scorer = make_scorer(mean_squared_error)
-    # sss = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
-
-    # scaler = StandardScaler().fit(X)
-    # X = scaler.transform(X)
 
     random_grid = {'alpha': [0.1, 0.5, 1.0, 5.0, 10.0]}
 
@@ -26,7 +22,6 @@ def rf_randomized_search(X, y):
 
 
 if __name__ == "__main__":
-    # X, _, truthMean = get_features_and_labels()
     with open("../../feature_selection/selected_81/selected_training.pkl", "rb") as f:
         X = pickle.load(f)
         truthClass = pickle.load(f)

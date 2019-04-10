@@ -1,7 +1,5 @@
 from sklearn.metrics import make_scorer, mean_squared_error
 from sklearn.model_selection import RandomizedSearchCV, StratifiedShuffleSplit
-import scipy.stats as st
-from sklearn.ensemble import GradientBoostingRegressor
 from xgboost import XGBRegressor
 
 from feature_extraction.services.utils.regression_features_and_labels import get_features_and_labels
@@ -11,8 +9,6 @@ def gtboost_randomized_search(X, y):
     mse_scorer = make_scorer(mean_squared_error)
     sss = StratifiedShuffleSplit(n_splits=3, random_state=42)
 
-    # scaler = StandardScaler().fit(X)
-    # X = scaler.transform(X)
 
     params = {
         "n_estimators": [50, 100, 200, 500, 1000],
@@ -23,14 +19,6 @@ def gtboost_randomized_search(X, y):
         "gamma": [0, 1, 5]
     }
 
-
-    # Create the random grid
-    # params = {
-    #     "n_estimators": st.randint(3, 40),
-    #     "max_depth": st.randint(3, 40),
-    #     "learning_rate": st.uniform(0.05, 0.4),
-    #     "criterion": ["mse"]
-    # }
 
     n_iter_search = 100
 

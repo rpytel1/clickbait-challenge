@@ -6,7 +6,7 @@ import numpy as np
 from stanfordcorenlp import StanfordCoreNLP
 import json
 
-nlp = StanfordCoreNLP('http://localhost', port=9000, timeout=500000)  # , quiet=False, logging_level=logging.DEBUG)
+nlp = StanfordCoreNLP('http://localhost', port=9000, timeout=500000)
 props = {
     'annotators': 'sentiment',
     'pipelineLanguage': 'en',
@@ -22,7 +22,7 @@ def annotate(sentence):
 def modify_floating_point_sign(str):
     return re.sub(r'(\d),(\d)', r'\1.\2', str)
 
-
+# aggregate method extracting all sentiment features
 def calculate_sentiment_features(str_list):
     if str_list == [''] or str_list == []:
         return 0, 0, 0, 0, 0
@@ -52,14 +52,13 @@ def calculate_sentiment_features(str_list):
     return get_mode(sentiment_list), matrix.mean(), num_extremes_positive / num_words, num_extremes_negative / num_words\
         , max(syntactic_dist_list)
 
-
+# Function extracting sentiment per each word in a sentence
 def extract_sentiments_per_words(s):
     lst = re.findall("(sentiment=\d)+", s['sentimentTree'])
     improved_lst = [x[10:] for x in lst]
     return improved_lst
 
-
-# Here we assume that both nlpcore and nltk tokenize sentences and worlds the same way
+# Function extracting maximum syntacting distance per each sentence
 def extract_length_of_syntactic_distance(s):
     words = [token["word"] for token in s["tokens"]]
     dist_list = [0]
@@ -73,13 +72,13 @@ def extract_length_of_syntactic_distance(s):
                 dist_list.append(-1)
     return max(dist_list)
 
-
+# function extracting most popular value among list
 def get_mode(lst):
     d_mem_count = Counter(lst)
     return d_mem_count.most_common()[0][0]
 
 
-# no keywords
+# Aggregate function calculating all sentiment features
 def calculate_all_sentiment_features(entry):
     post_title_sentiment = calculate_sentiment_features([entry["postText"][0]])
     article_title_sentiment = calculate_sentiment_features([entry["targetTitle"]])

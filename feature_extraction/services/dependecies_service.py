@@ -1,28 +1,16 @@
-import nltk
 from data_reading.preprocess_data import apply_lower, contractions
 from nltk import StanfordPOSTagger
 import json
 
 model_pos_tag = '../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
 jar_pos_tag = '../stanford-postagger-2018-10-16/stanford-postagger.jar'
-# model_pos_tag = '../../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
-# jar_pos_tag = '../../stanford-postagger-2018-10-16/stanford-postagger.jar'
 
 tagger_pos = StanfordPOSTagger(model_pos_tag, path_to_jar=jar_pos_tag, encoding='UTF-8')
 
+# function calculating different kinds of POS
 def add_no_nouns(entry):
     entry = contractions(entry["targetTitle"])
     entities = apply_lower(entry)
-
-    # # apply lower to all words, not only to the non-entities words
-    # apply_all_lower = []
-    # for i in entities: apply_all_lower.append(i.lower())
-    # entities = apply_all_lower
-
-    # # nltk POS tagging
-    # tagged_text = nltk.pos_tag(entities)
-
-    # Stanford POS tagging
 
     tagged_text = tagger_pos.tag(entities)
 
@@ -78,92 +66,24 @@ def get_feat_names():
            'number of wh determiners', 'number of possessive pronouns', 'number of past participle verbs',\
            'number of third person verbs', 'number of past tense verbs', 'number of sing. present verbs'
 
-
+# function creating POS data
 def create_POS_data(data):
     POS_list = []
     for entry in data:
         entry2 = contractions(entry["targetTitle"])
         entities = apply_lower(entry2)
-
-        # # apply lower to all words, not only to the non-entities words
-        # apply_all_lower = []
-        # for i in entities: apply_all_lower.append(i.lower())
-        # entities = apply_all_lower
-
-        # # nltk POS tagging
-        # tagged_text = nltk.pos_tag(entities)
-
-        # Stanford POS tagging
-        # model_pos_tag = '../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
-        # jar_pos_tag = '../stanford-postagger-2018-10-16/stanford-postagger.jar'
-        # tagger_pos = StanfordPOSTagger(model_pos_tag, path_to_jar=jar_pos_tag, encoding='UTF-8')
         tagged_text = tagger_pos.tag(entities)
         for i in tagged_text:
             POS_list.append(i[1])
     return ' '.join(POS_list)
 
-
+# function creating POS entry
 def create_POS_entry(entry):
     POS_list = []
     entry = contractions(entry["targetTitle"])
     entities = apply_lower(entry)
 
-    # # apply lower to all words, not only to the non-entities words
-    # apply_all_lower = []
-    # for i in entities: apply_all_lower.append(i.lower())
-    # entities = apply_all_lower
-
-    # # nltk POS tagging
-    # tagged_text = nltk.pos_tag(entities)
-
-    # Stanford POS tagging
-    # model_pos_tag = '../stanford-postagger-2018-10-16/models/english-bidirectional-distsim.tagger'
-    # jar_pos_tag = '../stanford-postagger-2018-10-16/stanford-postagger.jar'
-    # tagger_pos = StanfordPOSTagger(model_pos_tag, path_to_jar=jar_pos_tag, encoding='UTF-8')
     tagged_text = tagger_pos.tag(entities)
     for i in tagged_text:
         POS_list.append(i[1])
     return ' '.join(POS_list)
-
-
-def read_data(filename):
-    data = []
-    with open(filename, encoding="utf-8") as f:
-        for line in f:
-            data.append(json.loads(line))
-    return data
-
-
-# print('Dataset Reading...')
-# data = read_data('../../data/clickbait-training/instances.jsonl')
-# data_truth = read_data('../../data/clickbait-training/truth.jsonl')
-# POS_taggings = []
-# c = 0
-# for entry in data:
-#     POS_taggings.append(add_no_nouns(entry))
-#     print(POS_taggings[c])
-#     print(data_truth[c]['truthClass'])
-#     c +=1
-#
-#
-# def read_data(filename):
-#     data = []
-#     with open(filename, encoding="utf-8") as f:
-#         j = 3
-#         k = 0
-#         for line in f:
-#             data.append(json.loads(line))
-#             k += 1
-#             if k > 5:
-#                 break
-#     return data
-#
-#
-# print('Dataset Reading...')
-# data = read_data('../../data/clickbait-training/instances.jsonl')
-# # print(data)
-# # print(data['targetTitle'])
-# # for i in data:
-# #     print(contractions(i["targetTitle"]))
-# # print(len(create_POS_data(data)))
-# print(create_POS_entry(data[1]))

@@ -4,7 +4,7 @@ from nltk.corpus import words
 from feature_extraction.services.common_words_service import get_unique_set_from_text
 from feature_extraction.services.image_service import get_text_from_image
 
-
+# Implementation of formality features
 def calculate_all_formality_features(entry):
     formality_post_title = calculate_formal_words(entry["postText"][0])
     # formality_post_image = calculate_formal_words(get_text_from_image(entry))

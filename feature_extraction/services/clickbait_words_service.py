@@ -84,7 +84,7 @@ clickbait_regexp = [
     r"\bThe Best[\s\w+]+\sEver\b"
 ]
 
-
+# function calculating no of occurances of clickbait specific words
 def get_clickbait_words_features(entry):
     num_clickbaits_in_post = 0
     num_clickbait_patterns_in_post = 0
